@@ -1,0 +1,7 @@
+.not-visible{
+    display: none;
+}
+button:hover, button:focus {
+    outline: none;
+}
+    

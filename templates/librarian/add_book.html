@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container col-lg-6 mt-4 py-2" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+    <h2 class="text-center">Add Book</h2>
+    <form  method="POST" enctype="multipart/form-data" class="m-2" <!-- Name input -->
+        {% csrf_token %}
+        <div class="form-outline mb-4">
+            <label class="form-label" for="id_title">Book Cover</label>
+            {{form.image}}
+            
+            <img id="blah" src="#" class="img-fluid" width="200" height="200"/>
+        </div>
+
+
+        <div class="form-outline mb-4">
+            <label class="form-label" for="id_title">Title</label>
+            {{form.title}}
+        </div>
+
+        <!-- Message input -->
+        <div class="form-outline mb-4">
+            <label class="form-label" for="id_description">Description</label>
+            {{form.description}}
+        </div>
+
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+            <label class="form-label" for="id_direction">Direction</label>
+            {{form.direction}}
+        </div>
+
+        <div class="form-outline mb-4">
+            <label class="form-label" for="id_direction">Category</label>
+            {{form.category}}
+        </div>
+
+        <!-- Checkbox -->
+        <div class="form-check d-flex  mb-4">
+            <label class="form-check-label" for="id_active">
+                Active :
+            </label>
+            {{form.active}}
+        </div>
+
+        <!-- Submit button -->
+        <div class=" d-flex justify-content-center align-items-center">
+            <button type="submit" class="btn btn-secondary col-lg-6 col-10 rounded-pill">Submit</button>
+        </div>
+    </form>
+
+</div>
+{% endblock content %}
+{% block scripts %}
+<script>
+    document.getElementById("id_description").classList.add("form-control")
+</script>
+<script>
+    blah.style.display = "none"
+    id_image.onchange = evt => {
+        blah.style.display = ""
+        const [file] = id_image.files
+        if (file) {
+          blah.src = URL.createObjectURL(file)
+        }
+      }
+    </script>
+{% endblock scripts %}

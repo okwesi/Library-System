@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if messages %}
+<ul class="messages" id="alert">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div id="books">
+    <div id="student-books" class="row">
+        {% comment %} books goes here {% endcomment %}
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <div id="books-spinner">
+        <div class="spinner-border" role="status">
+        </div>
+    </div>
+</div>
+<div class="text-center mb-3" id="end-box">
+<button class="btn btn-primary" id="load-btn">load more</button>
+</div> 
+
+{% endblock content %}
+{% block scripts %}
+<script src="{% static 'library/javascript/school_bookshelf.js' %}" defer></script>
+{% endblock scripts %}

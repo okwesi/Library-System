@@ -1,0 +1,11 @@
+{% comment %} <form method="POST">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit" class="rounded-button login-cta text-center"> Publish Article </button>
+</form>
+<div id="hi"> </div>
+{% load static %}
+
+{% block scripts %}
+  <script src="{% static 'library/javascript/super_librarian_dashboard.js' %}" defer></script>  
+{% endblock scripts %} {% endcomment %}

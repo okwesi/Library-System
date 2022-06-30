@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{{user.librarian}}
+{{user.librarian.library}}
+{{user.librarian.library.id}}
+{{user.groups.all.0.name}}
+
+
+<br>
+<br>
+<br>
+{% comment %} this is libray{{user.librarian.library}} {% endcomment %}
+<br>
+<br>
+<form method="POST">
+    {% csrf_token %}
+    <div class="login-form-group">{{ form }}</div>
+    
+    <button class="btn btn-primary mt-4 signup">Update</button>
+    12345678.we
+   
+
+</form>
+
+{% endblock content %}

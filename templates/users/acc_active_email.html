@@ -1,0 +1,9 @@
+{% autoescape off %}  
+Hi {{ user.email}},
+
+    here is your email
+
+Please click on the link to confirm your registration,  
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+use this link to activate your account and login with the email and password  
+{% endautoescape %}

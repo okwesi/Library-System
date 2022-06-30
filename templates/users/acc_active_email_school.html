@@ -1,0 +1,12 @@
+{% autoescape off %}  
+Hi {{ user.school.name }},
+
+    here is your login info
+
+    {{user.email}}
+    {{user_password}}
+    
+Please click on the link to confirm your registration,  
+http://{{ domain }}{% url 'login' %}
+use this link to log into your account and login with the email and password  
+{% endautoescape %}

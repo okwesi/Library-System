@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Super Librarian
+{% endblock title %}
+
+{% block content %}
+
+<h2>SUPER LIBRARIAN DASHBOARD</h2>
+<h3>UserName: {{user.librarian.full_name | upper}}</h3>
+<h3>LIBRARY: {{user.librarian.library.name | upper}}</h3>
+{% comment %} TODO alert {% endcomment %}
+<div class="alert" id="alert" role="alert">
+</div>
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <button class="nav-link active" id="nav-librarians-tab" data-bs-toggle="tab" data-bs-target="#nav-librarians"
+      type="button" role="tab" aria-controls="nav-librarians" aria-selected="true">Librarians</button>
+
+    <button class="nav-link" id="school-tab" data-bs-toggle="tab" data-bs-target="#school" type="button" role="tab"
+      aria-controls="school" aria-selected="false">schools</button>
+
+    <button class="nav-link " id="nav-books-tab" data-bs-toggle="tab" data-bs-target="#nav-books" type="button"
+      role="tab" aria-controls="nav-books" aria-selected="false">Books</button>
+    <button class="nav-link" id="nav-request-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button"
+      role="tab" aria-controls="nav-contact" aria-selected="false">Requests</button>
+    
+    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"
+      aria-controls="profile" aria-selected="false">Profile</button>
+
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-librarians" role="tabpanel" aria-labelledby="nav-librarians-tab">
+
+    <!-- {% comment %} button triggers Modal {% endcomment %} -->
+    <button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#addLibrarianModal">
+      Add Librarian
+    </button>
+    <!-- {% comment %} end of buttton triggers modal {% endcomment %} -->
+
+    <!-- {% comment %} LIBRARIAN table {% endcomment %} -->
+    <div id="librarians">
+      <table class="table table-dark table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Last Login</th>
+            <th scope="col">Role</th>
+            <th scope="col">Delete</th>
+
+          </tr>
+        </thead>
+        <tbody id="users">
+          <div class="d-flex justify-content-center">
+            <div id="spinner-box">
+              <div class="spinner-border" role="status">
+              </div>
+            </div>
+          </div>
+        </tbody>
+      </table>
+    </div>
+    <!-- {% comment %} end of librarian table {% endcomment %} -->
+  </div>
+
+  <!-- School Tab -->
+  <div class="tab-pane fade" id="school" role="tabpanel" aria-labelledby="school-tab">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSchoolModal">
+      Add School
+    </button>
+    <div class="d-flex justify-content-center">
+      <div id="school-spinner">
+        <div class="spinner-border" role="status">
+        </div>
+      </div>
+    </div>
+    <div id="schools">
+      <div id="schools-box" class="row">
+        <!-- {% comment %} books goes here {% endcomment %} -->
+      </div>
+    </div>
+  </div>
+  <!-- End of School Tab -->
+
+  <!-- {% comment %} Books tab {% endcomment %} -->
+  <div class="tab-pane fade" id="nav-books" role="tabpanel" aria-labelledby="nav-books-tab">
+    <button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#addBookModal">
+      Add Book
+    </button>
+    <div class="d-flex justify-content-center">
+      <div id="books-spinner">
+        <div class="spinner-border" role="status">
+        </div>
+      </div>
+    </div>
+    <div id="boks">
+      <div id="books" class="row">
+        <!-- {% comment %} books goes here {% endcomment %} -->
+      </div>
+    </div>
+
+  </div>
+  <!-- {% comment %} end of Books tab {% endcomment %} -->
+  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+    <button onclick="refresh()">Refresh</button>
+
+    <div id="request-spinner" class="">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+    <div id="requests-box" class="row mt-2">
+      <!-- requests go here -->
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- Modals are down here -->
+
+
+<!-- {% comment %} Add librarian Modal {% endcomment %} -->
+<div class="modal  fade" id="addLibrarianModal" tabindex="-1" aria-labelledby="addLibrarianModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLibrarianModalLabel">Add Librarian</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="librarian-form" method="POST">
+          {% csrf_token %}
+          {{libraryForm}}
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-dark rounded-button  text-center">Add</button>
+          </div>
+          12345678.we
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} end add librarian modal {% endcomment %}
+
+
+
+{% comment %} Add Book Modal {% endcomment %}
+<div class="modal  fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBookModalLabel">Add Librarian</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="book-form" method="POST" action='books/add/'>
+          {% csrf_token %}
+          {{bookForm}}
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-dark rounded-button  text-center">Add Book</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} end add Book modal {% endcomment %}
+
+
+
+<!-- Add school Modal -->
+<div class="modal fade" id="addSchoolModal" tabindex="-1" aria-labelledby="addSchoolModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addSchoolModalLabel">Add School</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'signup_school' %}" method="post" id="school-form">
+          {% csrf_token %}
+          {{schoolForm}}
+          <hr>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+        12345678.we
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Add school Modal -->
+{% endblock content %}
+
+{% block scripts %}
+
+<script src="{% static 'library/javascript/super_librarian_dashboard.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'library/css/style.css' %}">
+{% endblock style %}

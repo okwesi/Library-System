@@ -1,0 +1,12 @@
+{% autoescape off %}  
+Hi {{ user.librarian.full_name }},
+
+    here is your email
+
+    {{user.email}}
+    {{user_password}}
+    
+Please click on the link to confirm your registration,  
+http://{{ domain }}{% url 'login' %}
+use this link to log into your account and login with the email and password  
+{% endautoescape %}

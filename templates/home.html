@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align:center;">
+    <h1>HOME PAGE</h1><br>
+</div>
+
+<table class="table">
+    <tbody>
+    <tr>
+      <td>Email</td>
+      <td>Phone</td>
+      <td>Group</td>
+    </tr>
+    <tr>
+      <td>{{user.email}}</td>
+      <td>{{user.phone}}</td>
+      <td>{{user.groups.all.0.name}}</td>
+    </tr>    
+  </tbody>
+</table>
+{% if user.groups.all.0.name == 'super Librarian' %}
+<table class="table">
+    <tbody>
+    <tr>
+      <td>Library name</td>
+      <td>Library location</td>
+      <td>Library address</td>
+    </tr>
+    <tr>
+      <td>{{user.librarian.library.full_name}}</td>
+      <td>{{user.librarian.library.location}}</td>
+      <td>{{user.librarian.library.gps_location}}</td>
+    </tr>    
+  </tbody>
+</table>
+{% endif %}
+{% if user.groups.all.0.name == 'Librarian' %}
+<table class="table">
+    <tbody>
+    <tr>
+      <td>Library name</td>
+      <td>Library location</td>
+      <td>Library address</td>
+    </tr>
+    <tr>
+      <td>{{user.librarian.library.full_name}}</td>
+      <td>{{user.librarian.library.location}}</td>
+      <td>{{user.librarian.library.gps_location}}</td>
+    </tr>    
+  </tbody>
+</table>
+{% endif %}
+{% if user.groups.all.0.name == 'school' %}
+<table class="table">
+    <tbody>
+    <tr>
+      <td>school name</td>
+      <td>School location</td>
+      <td>school address</td>
+      <td>school number</td>
+    </tr>
+    <tr>
+      <td>{{user.school.name}}</td>
+      <td>{{user.school.location}}</td>
+      <td>{{user.school.gps_location}}</td>
+      <td>{{user.school.school_number}}</td>
+    </tr>    
+  </tbody>
+</table>
+{% endif %}
+{% if user.groups.all.0.name == 'student' %}
+<table class="table">
+    <tbody>
+    <tr>
+      <td>student name</td>
+      <td>student address</td>
+      <td>student digital address</td>
+      <td>student school</td>
+    </tr>
+    <tr>
+      <td>{{user.student.name}}</td>
+      <td>{{user.student.address}}</td>
+      <td>{{user.student.gps_location}}</td>
+      <td>{{user.student.school.name}}</td>
+    </tr>    
+  </tbody>
+</table>
+{% endif %}
+{% comment %} {{user.email}}
+
+{{user.librarian.library}}
+{{user.groups}}
+{{user.librarian.library.name}}
+{{user.groups.all.0.name}} {% endcomment %}
+
+<br>
+
+
+
+student: victusstudent3@gmail.com <br>
+
+school: victusadmin@gmail.com<br>
+
+librarian: brongahafolibrarian1@gmail.com<br>
+
+super librarian: brongahofosuperlibrarian@gmail.com<br>
+
+<br>
+password: 12345678.we
+
+
+{% endblock content %}
+
+

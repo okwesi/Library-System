@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Librarian Dashboard
+{% endblock title %}
+{% block content %}
+
+<h2>LIBRARIAN DASHBOARD</h2>
+<h3>UserName: {{user.librarian.full_name | upper}}</h3>
+<h3>LIBRARY: {{user.librarian.library.name | upper}}</h3>
+<!--  TODO  -->
+<div class="alert" id="alert" role="alert">
+</div>
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-book-tab" data-bs-toggle="tab" data-bs-target="#nav-book" type="button"
+            role="tab" aria-controls="nav-book" aria-selected="true">Books</button>
+        <button class="nav-link " id="nav-request-tab" data-bs-toggle="tab" data-bs-target="#nav-request" type="button"
+            role="tab" aria-controls="nav-request" aria-selected="false">Requests</button>
+        <button class="nav-link" id="nav-approval-tab" data-bs-toggle="tab" data-bs-target="#nav-approval" type="button"
+            role="tab" aria-controls="nav-approval" aria-selected="false">Approvals</button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-book" role="tabpanel" aria-labelledby="nav-book-tab">
+
+        <button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#addBookModal">
+            Add Book
+        </button>
+        <div class="d-flex justify-content-center">
+            <div id="books-spinner">
+                <div class="spinner-border" role="status">
+                </div>
+            </div>
+        </div>
+        <div id="boks">
+            <div id="books" class="row">
+                <!-- books goes here -->
+            </div>
+        </div>
+
+    </div>
+    <!-- End of Books Tab -->
+
+    <!-- Request Tab  -->
+    <div class="tab-pane fade" id="nav-request" role="tabpanel" aria-labelledby="nav-request-tab">
+        Orders
+    </div>
+    <!-- End of Request Tab -->
+
+    <!-- Approvals Start Here -->
+    <div class="tab-pane fade" id="nav-approval" role="tabpanel" aria-labelledby="nav-approval-tab">
+        <div class="" id="approval-table">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Phone</th>
+                      <th scope="col">Last Login</th>
+                      <th scope="col">Role</th>
+                      <th scope="col">Delete</th>
+          
+                    </tr>
+                  </thead>
+                  <tbody id="users">
+                    <div class="d-flex justify-content-center">
+                      <div id="spinner-box">
+                        <div class="spinner-border" role="status">
+                        </div>
+                      </div>
+                    </div>
+                  </tbody>
+              </table>
+        </div>
+    </div>
+    <!-- Approvals Tab -->
+</div>
+
+
+{% comment %} Add Book Modal {% endcomment %}
+<div class="modal  fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBookModalLabel">Add Librarian</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="book-form" method="POST" action='books/add/'>
+                    {% csrf_token %}
+                    {{bookForm}}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-dark rounded-button  text-center">Add Book</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% comment %} end add Book modal {% endcomment %}
+{% endblock content %}
+
+
+
+{% block scripts %}
+<script src="{% static 'library/javascript/librarian_dashboard.js' %}" defer></script>
+{% endblock scripts %}

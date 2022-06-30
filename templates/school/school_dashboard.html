@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+School Dashboard
+{% endblock title %}
+
+{% block content %}
+<h2>SCHOOL DASHBOARD</h2>
+<h3>SCHOOL NAME : {{user.school.name | upper}}</h3>
+<h3>SCHOOL LIBRARY : {{user.school.library.name | upper}}</h3>
+<br>
+<br>
+<br>
+
+<h3>Students : {{count}}</h3>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button"
+      role="tab" aria-controls="students" aria-selected="true">Students</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="Approved-tab" data-bs-toggle="tab" data-bs-target="#books" type="button" role="tab"
+      aria-controls="books" aria-selected="false">Books</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab"
+      aria-controls="contact" aria-selected="false">Contact</button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+
+  <div class="tab-pane fade show active" id="students" role="tabpanel" aria-labelledby="students-tab">
+    {% comment %} LIBRARIAN table {% endcomment %}
+    <div id="students-table">
+      <table class="table table-info table-striped">
+        <thead>
+          <tr> 
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Class</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Address</th>
+
+          </tr>
+        </thead>
+        <tbody id="student">
+          <div class="d-flex justify-content-center">
+            <div id="student-table-spinner">
+              <div class="spinner-border" role="status">
+              </div>
+            </div>
+          </div>
+        </tbody>
+      </table>
+    </div>
+    {% comment %} end of librarian table {% endcomment %}
+  </div>
+
+
+  <div class="tab-pane fade" id="books" role="tabpanel" aria-labelledby="books-tab">
+
+    <div class="" id="school-books">
+      <h2>
+        School Request
+      </h2>
+      <table  class="table table-info table-striped">
+        <tbody id="school-books-row">
+        </tbody>
+      </table>
+    </div>
+    <div id="books-table">
+      <h2>
+        Students Request
+      </h2>
+      <table class="table table-info table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Row</th>
+            <th scope="col">Book</th>
+            <th scope="col">Student</th>
+            <th scope="col">Class</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody id="books-row">
+          <div class="d-flex justify-content-center">
+            <div id="books-table-spinner">
+              <div class="spinner-border" role="status">
+              </div>
+            </div>
+          </div>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+</div>
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script src="{% static 'library/javascript/school_dashboard.js' %}" defer></script>
+{% endblock scripts %}
