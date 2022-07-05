@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from books.models import Book
 from request.forms import SchoolRequestForm
+from request.models import StudentRequests
 from students_school.models import Student
 
 # Create your views here.
@@ -121,3 +122,8 @@ def school_book_detail(request, id):
         "request_form" : request_form       
     }
     return render(request, "school/school_book_detail.html", context)
+
+
+
+def student_dashboard(request):
+    books = StudentRequests.objects.filter(student=request.user.student)

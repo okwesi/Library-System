@@ -76,7 +76,7 @@ class PublicBookListView(ListView):
     model = Book
     template_name = 'books/bookshelf.html'
     context_object_name = "books"
-    paginate_by = 5
+    paginate_by = 20
     
     def get_queryset(self):
         query = self.request.GET.get('search')

@@ -12,7 +12,7 @@ class Book(models.Model):
     about = models.TextField(verbose_name="About Book", max_length=1000)
     library = models.ForeignKey(Library, on_delete=models.CASCADE)
     stock = models.IntegerField(verbose_name="book quantity", null=False)
-    # image = models.ImageField(upload_to)
+    book_cover = models.ImageField(upload_to='books/')
     def __str__(self):
         return self.title
     

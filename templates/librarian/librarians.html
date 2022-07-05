@@ -2,7 +2,7 @@
 {% block content %}
 {% include "librarian/sidenav.html" %}
 <div class="col d-flex flex-column h-sm-100">
-  <main class="row overflow-auto">
+  <main class="row overflow-auto container">
 
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
@@ -28,5 +28,7 @@
 
 </div>
 </div>
-
+<script>
+  document.getElementById("librarian").classList.add("bg-warning", "px-5", "rounded-pill")
+</script>
 {% endblock content %}

@@ -5,4 +5,9 @@
   <h2>LIBRARIAN DASHBOARD</h2>
 <h3>UserName: {{user.librarian.full_name | upper}}</h3>
 <h3>LIBRARY: {{user.librarian.library.name | upper}}</h3>
+
+<script>
+  document.getElementById("overview").classList.add("bg-warning", "px-5", "rounded-pill")
+  document.getElementById("dashboard").classList.add("bg-success",'shadow-lg','rounded-pill', 'px-4')
+</script>
 {% endblock content %}

@@ -1,10 +1,7 @@
 import datetime
-import json
-import re
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import  JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-from django.core import serializers
 from datetime import date
 
 

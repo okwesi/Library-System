@@ -67,5 +67,7 @@
         {% else %}
           <p>No Approved Requests For Students</p>
         {% endif %}
-
+        <script>
+          document.getElementById("received").classList.add("bg-warning", "px-5",'shadow-lg', "rounded-pill")
+        </script>
         {% endblock content %}

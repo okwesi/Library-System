@@ -32,31 +32,40 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+      }
+      
+</style>
 </head>
 
 
 <body style="font-family: 'Poppins', sans-serif;">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success ">
         <div class="container">
-            <a class="navbar-brand" href="#"><img
-                    src="https://www.graphic.com.gh/images/2020/april/24/sQCnrdnlu7eD2LlIJre_ulkuAxyv-6oBb6Q0A8OURQN-htPmlTPwRoMFlocA-X335ws300.jpg"
-                    alt="Logo" class="img-fluid" width='80' /></a>
-            <a class="navbar-brand" href="#">
-                <h6>E-REQUEST PLATFORM FOR PUBLIC LIBRARIES IN GHANA</h6>
-            </a>
+            <a class="navbar-brand text-center" href="{% url 'home' %}">
+                <img
+                    src="https://www.library.gov.gh/en/isns/assets/logo/ghlaLogo.png"
+                    alt="Logo" class="img-flui" width='40' height="40" />
+                    <h6 class="navar-brand tex">Ghana Library Authority</h6>
+                </a>
+    
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                    <li class="nav-item" id="home">
+                        <a class="nav-link text-warning" href="{% url 'home' %}">Home</a>
                     </li>
 
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'public-books' %}">BookShelf</a>
+                    <li class="nav-item" id="bookshelf">
+                        <a class="nav-link text-warning " href="{% url 'public-books' %}">BookShelf</a>
                     </li>
                     {% endif %}
                     <!-- {% if user.groups.all.0.name == "student"  %}                    
@@ -66,25 +75,25 @@
                   {% endif %} -->
 
                     {% if user.groups.all.0.name == "super Librarian" %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'library_admin' %}">DashBoard</a>
+                    <li class="nav-item" id="dashboard">
+                        <a class="nav-link text-warning" href="{% url 'library_admin' %}">DashBoard</a>
                     </li>
                     {% elif user.groups.all.0.name == "librarian" %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'librarian_dashboard' %}">DashBoard</a>
+                    <li class="nav-item" id="dashboard">
+                        <a class="nav-link text-warning" href="{% url 'librarian_dashboard' %}">DashBoard</a>
                     </li>
                     {% elif user.groups.all.0.name == "school" %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'school-dashboard' %}">DashBoard</a>
+                    <li class="nav-item" id="dashboard">
+                        <a class="nav-link text-warning" href="{% url 'school-dashboard' %}">DashBoard</a>
                     </li>
                     {% elif user.groups.all.0.name == "student" %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="">DashBoard</a>
+                    <li class="nav-item" id="dashboard">
+                        <a class="nav-link text-warning" href="">DashBoard</a>
                     </li>
                     {% endif %}
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact Us</a>
+                    <li class="nav-item" id="dashboard">
+                        <a class="nav-link text-warning" href="#">Contact Us</a>
                     </li>
                 </ul>
                 {% if user.is_authenticated %}

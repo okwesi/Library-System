@@ -7,17 +7,34 @@
     <strong>Message: </strong> {{ message }}
 </div>
 {% endfor %}
-Book Details
+<!-- Book Details -->
 
-{{book.title}}-- {{book.stock}} <br>
+<!-- {{book.title}}-- {{book.stock}} <br>
 
 {{user.student.name}}
-{{user.school.name}}
+{{user.school.name}} -->
+<div class="container col-lg-6 mt-5">
+    <div class="card h-100 border-0">
+        <h3 class="card-title text-center">{{book.title|title}}</h3>
+        {% if book.book_cover %}
+        <img src="{{book.book_cover.url}}" alt="{{book.title}}" class="card-img-top" height="300px">
+        {% else %}
+        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" height="300px" class="card-img-top"
+            alt="Skyscrapers" />
+        {% endif %}
+        <div class="card-body">
+            <p class="card-text">
+                {{book.about}}
+            </p>
+        </div>
+    </div>
+
+</div>
 {% if borrowed %}
 you cant borrow a book for now
 {% else %}
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#DeleteModal">
+<button type="button" class="btn btn-success text-warning" data-bs-toggle="modal" data-bs-target="#DeleteModal">
     Request
 </button>
 {% endif %}
@@ -60,4 +77,8 @@ you cant borrow a book for now
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("bookshelf").classList.add("bg-success", 'shadow-lg', 'rounded-pill', 'px-4')
+</script>
 {% endblock content %}
