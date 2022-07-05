@@ -1,47 +1,48 @@
 from multiprocessing import context
+import re
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from books.models import Book
 from request.forms import SchoolRequestForm
 from students_school.models import Student
-import json
-from users.models import User
-from .forms import StudentForm
-# Create your views here.
-def create_student( request):
-    pass
 
+# Create your views here.
 
  
 def school_dashboard(request):
     students = Student.objects.filter(school_id=request.user.school.school_id)
     count = students.count
     
-    return render(request, 'school/school_dashboard.html', {"count": count})
+    return render(request, 'school/overview.html', {"count": count})
 
 def school_get_students(request):
     students = Student.objects.filter(school_id=request.user.school.school_id)
     count = students.count
     data = []
-    for student in students: 
-        student_data = {
-            'id': student.student_id,
-            'name' : student.name,
-            'email': student.user.email,
-            'phone': student.user.phone,
-            'city': student.city,
-            'address': student.address,
-            'gps_location' : student.gps_location,
-            'school_class' : student.school_class,
-            'gender' : student.gender
-        }
-        data.append(student_data)
+    # for student in students: 
+    #     student_data = {
+    #         'id': student.student_id,
+    #         'name' : student.name,
+    #         'email': student.user.email,
+    #         'phone': student.user.phone,
+    #         'city': student.city,
+    #         'address': student.address,
+    #         'gps_location' : student.gps_location,
+    #         'school_class' : student.school_class,
+    #         'gender' : student.gender
+    #     }
+    #     data.append(student_data)
     
-    return JsonResponse(
-        {
-        'data' : data,
-        }
-    ) 
+    # return JsonResponse(
+    #     {
+    #     'data' : data,
+    #     }
+    # ) 
+    context = {
+        "students" : students,
+        "count" :  count
+    }
+    return render(request, 'school/students.html', context)
     
     
 

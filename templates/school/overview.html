@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% include "school/sidenav.html" %}
+  <div class="col d-flex flex-column h-sm-100">
+    <main class="row overflow-auto">
+  
+  <h2>SCHOOL DASHBOARD</h2>
+<h3>SCHOOL NAME : {{user.school.name | upper}}</h3>
+<h3>SCHOOL LIBRARY : {{user.school.library.name | upper}}</h3>
+<br>
+    </main>
+    </div>
+    <script>
+      document.getElementById("overview").classList.add("bg-warning", "text-light", "px-5")
+    </script>   
+{% endblock content %}

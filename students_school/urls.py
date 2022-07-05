@@ -4,7 +4,6 @@ from . views import *
 
 
 urlpatterns = [    
-        url('student/create-profile/', create_student, name='create_student_profile'),
         url('school-dashboard/', school_dashboard, name='school-dashboard'),
         url('get_students/', school_get_students, name="get_students"),
         url('school/bookshelf/', school_bookshelf, name="school-bookshelf"),

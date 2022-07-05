@@ -29,16 +29,8 @@ from library_app.models import Librarian, Library
 
 def super_dashboard_view(request):
     """function for creating forms to add users then sends a verification link to the email of the user"""
-    libraryForm = LibrarianForm()
-    bookForm = BookForm()
-    schoolForm = SignSchoolUpForm(auto_id="school_%s")
-
-   
+  
     context = {
-        "libraryForm" : libraryForm,
-        "bookForm" : bookForm,
-        "schoolForm" : schoolForm
-
     }
     
     return render(request, "librarian/overview.html", context)

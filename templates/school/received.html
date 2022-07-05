@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "school/sidenav.html" %}
+<div class="col d-flex flex-column h-sm-100">
+    <main class="row overflow-auto">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+        <strong>Message: </strong> {{ message }}
+      </div>
+      {% endfor %}
+      <!-- {% if school_request or student_requests %}
+        
+        <form action="{% url 'set_received_requests' %}" method="post" id="approve-form">
+            {% csrf_token %}
+            <button type="submit">Received</button>
+        </form>
+        {% endif %} -->
+
+      {% if school_request %}
+        
+        <div class="" id="school-books">
+            <h2>
+              School Request
+            </h2>
+            <table  class="table table-info table-striped">
+              <tbody id="school-books-row">
+                <tr>
+                    <td>{{school_request.id}}</td>
+                    <td>{{school_request.book}}</td>
+                    <td>{{school_request.status}}</td>                   
+                    <td>{{school_request.quantity}}</td>                   
+                 </tr>
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <p>No Approved Requests For School</p>
+          {% endif %}
+
+          {% if student_requests %}
+            
+        <h2>Students</h2>
+        <div id="students-table">
+            <table class="table table-info table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Book</th>
+                        <th scope="col">Student</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                </thead>
+                <tbody id="student">
+                    {% for student_request in student_requests  %}
+                    <tr>
+                        <td>{{student_request.book}}</td>
+                        <td>{{student_request.student.name}}</td>
+                        <td>{{student_request.student.school_class}}</td>
+                        <td>{{student_request.status}}</td>
+                        
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+          <p>No Approved Requests For Students</p>
+        {% endif %}
+
+        {% endblock content %}

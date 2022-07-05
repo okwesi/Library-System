@@ -98,7 +98,7 @@ def book_detail(request, id):
         borrowed = request.user.student.borrowed
     if request.user.groups.filter(name="school").exists():
         borrowed = request.user.school.borrowed
-        request_form = SchoolRequestForm()   
+    request_form = SchoolRequestForm()   
  
     context = {
         "book" : book,

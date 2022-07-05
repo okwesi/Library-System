@@ -43,28 +43,7 @@
 </form>
 
 <script>
-    const form = document.getElementById("approve-form")
-    var csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
-    form.addEventListener('submit', e => {
-        e.preventDefault()
-        $.ajax({
-            type: 'POST',
-            url: '/request/approve/{{school_id}}',
-            data: {
-                csrfmiddlewaretoken: csrf_token,
-            },
-            success: function (response) {                
-                history.back()
-                refresh()
-            },
-            error: function (error) {
-                console.log('error', error)
-            }
-        })
-
-
-    })
 </script>
 
 {% endblock content %}

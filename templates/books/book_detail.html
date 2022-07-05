@@ -2,13 +2,18 @@
 
 
 {% block content %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+    <strong>Message: </strong> {{ message }}
+</div>
+{% endfor %}
 Book Details
 
-{{book.title}}
+{{book.title}}-- {{book.stock}} <br>
 
 {{user.student.name}}
 {{user.school.name}}
-{% if  borrowed %}
+{% if borrowed %}
 you cant borrow a book for now
 {% else %}
 
@@ -35,7 +40,7 @@ you cant borrow a book for now
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Proceed</button>
                     </div>
                 </form>
                 {% elif user.groups.all.0.name == "school" %}

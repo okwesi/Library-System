@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "school/sidenav.html" %}
+<div class="col d-flex flex-column h-sm-100">
+    <main class="row overflow-auto">
+        <h2>Students</h2>
+        <div id="students-table">
+            <table class="table table-info  table-warning">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Address</th>
+
+                    </tr>
+                </thead>
+                <tbody id="student">
+                    {% for student in students  %}
+                    <tr>               
+                        <td>{{student.name}}</td>
+                        <td>{{student.user.email}}</td>
+                        <td>{{student.user.phone}}</td>
+                        <td>{{student.school_class}}</td>
+                        <td>{{student.gender}}</td>
+                        <td>{{student.address}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endblock content %}

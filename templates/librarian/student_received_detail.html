@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Approve Books{% endblock title %}
+
+{% block content %}
+<h2>School Orders</h2>
+{% for order in school_request %}
+  
+<p>{{order.school.name}}</p>
+<p>{{order.book.title}}</p>
+<p>{{order.status}}</p>
+{% endfor %}
+
+
+<h2>Students Orders</h2>
+
+<table class="table table-success table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Student</th>
+            <th scope="col">Book</th>
+            <th scope="col">Status</th>
+            <th scope="col">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student_request in student_requests%}
+        <tr>
+            <td>{{student_request.student.name}}</td>
+            <td>{{student_request.book.title}}</td>
+            <td>{{student_request.status}}</td>
+            <td>{{student_request.request_date}}</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{{school_id}}
+<form action="{% url 'return_requests' school_id  %}" method="post" id="approve-form">
+    {% csrf_token %}
+    <button type="submit">Return Request</button>
+</form>
+
+
+{% endblock content %}
