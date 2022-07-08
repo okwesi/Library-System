@@ -1,2 +1,4 @@
 templates/registration/** linguist-documentation
 templates/users/** linguist-documentation
+templates/school/** linguist-documentation
+templates/librarian/** linguist-documentation
