@@ -10,25 +10,44 @@
     </div>
     {% endfor %}
 <div class="row">
-  <a class="btn btn-light col-3  mt-4 mb-4" type="button" href="{% url 'create_librarian' %}">Add Librarians</a>
+  <a class="btn btn-success text-warning rounded-pill col-3  mt-4 mb-4" type="button" href="{% url 'create_librarian' %}">Add Librarians</a>
 
 </div>
 
   
-    {% for librarian in librarians %}
-    {{librarian.full_name}}   
-    {% endfor %}
+{{librarian.full_name}}   
+<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for librarian in librarians %}
+      <br>
+      <div class="col ">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{librarian.full_name|title}}   
+            </h5>
+            <p class="card-text">
+              Email: {{librarian.user.email}}</p>
+            <p class="card-text">
+              Phone: {{librarian.user.phone}}
+            </p>
+          </div>
+          <p class="px-3 mx-3">
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>  
 
   </main>
 
-  <footer class="bg-light py-4 mt-auto text-center">
-    
-  </footer>
+
 </div>
 
 </div>
 </div>
 <script>
-  document.getElementById("librarian").classList.add("bg-warning", "px-5", "rounded-pill")
+  document.getElementById("librarian").classList.add("bg-warning", "px-4", "rounded-pill")
+  setTimeout(function () {
+    document.getElementById('message').style.display = "none";
+}, 4000);
 </script>
 {% endblock content %}

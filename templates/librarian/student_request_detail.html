@@ -4,44 +4,63 @@
 {% block title %}Approve Books{% endblock title %}
 
 {% block content %}
-<h2>School Orders</h2>
-{% for order in school_request %}
-  
-<p>{{order.school.name}}</p>
-<p>{{order.book.title}}</p>
-<p>{{order.status}}</p>
+<div class="container">
+    {% for message in messages %}
+<div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+    <strong>Message: </strong> {{ message }}
+</div>
 {% endfor %}
-
-
-<h2>Students Orders</h2>
-
-<table class="table table-success table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Student</th>
-            <th scope="col">Book</th>
-            <th scope="col">Status</th>
-            <th scope="col">Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for student_request in student_requests%}
-        <tr>
-            <td>{{student_request.student.name}}</td>
-            <td>{{student_request.book.title}}</td>
-            <td>{{student_request.status}}</td>
-            <td>{{student_request.request_date}}</td>
-        </tr>
+    <div>
+        <h3>School Orders</h3>
+        {% if school_request %}
+        {% for order in school_request %}
+        <table  class="table table-warning table-striped">
+            <tbody id="school-books-row">
+              <tr>
+                  <td>{{order.id}}</td>
+                  <td>{{order.book}}</td>
+                  <td>{{order.status}}</td>                   
+                  <td>{{order.quantity}}</td>                   
+               </tr>
+            </tbody>
+          </table>
         {% endfor %}
+        {% else %}
+        No School Request At the Moment
+        {% endif %}
+    </div>
 
-    </tbody>
-</table>
 
-<form action="" method="post" id="approve-form">
-    {% csrf_token %}
-    <button type="submit">Approve Request</button>
-</form>
 
+    <h3>Students Orders</h3>
+
+    <table class="table table-warning table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Student</th>
+                <th scope="col">Book</th>
+                <th scope="col">Status</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student_request in student_requests%}
+            <tr>
+                <td>{{student_request.student.name}}</td>
+                <td>{{student_request.book.title}}</td>
+                <td>{{student_request.status}}</td>
+                <td>{{student_request.request_date}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+    <form action="" method="post" id="approve-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success text-warning rounded-pill col-5 m-auto">Approve Request</button>
+    </form>
+</div>
 <script>
 
 </script>

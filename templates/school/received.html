@@ -9,21 +9,15 @@
         <strong>Message: </strong> {{ message }}
       </div>
       {% endfor %}
-      <!-- {% if school_request or student_requests %}
-        
-        <form action="{% url 'set_received_requests' %}" method="post" id="approve-form">
-            {% csrf_token %}
-            <button type="submit">Received</button>
-        </form>
-        {% endif %} -->
+      
 
       {% if school_request %}
         
         <div class="" id="school-books">
-            <h2>
+            <h3>
               School Request
-            </h2>
-            <table  class="table table-info table-striped">
+            </h3>
+            <table  class="table table-warning">
               <tbody id="school-books-row">
                 <tr>
                     <td>{{school_request.id}}</td>
@@ -40,9 +34,9 @@
 
           {% if student_requests %}
             
-        <h2>Students</h2>
+        <h3>Students Request</h3>
         <div id="students-table">
-            <table class="table table-info table-striped">
+            <table class="table table-warning table-striped">
                 <thead>
                     <tr>
                         <th scope="col">Book</th>
@@ -67,7 +61,9 @@
         {% else %}
           <p>No Approved Requests For Students</p>
         {% endif %}
+
+        
         <script>
-          document.getElementById("received").classList.add("bg-warning", "px-5",'shadow-lg', "rounded-pill")
+          document.getElementById("received").classList.add("bg-warning",'shadow-lg', "px-5", "rounded-pill")
         </script>
         {% endblock content %}

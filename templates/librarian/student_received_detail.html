@@ -4,18 +4,34 @@
 {% block title %}Approve Books{% endblock title %}
 
 {% block content %}
-<h2>School Orders</h2>
+<div class="container">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+            <strong>Message: </strong> {{ message }}
+        </div>
+        {% endfor %}
+<h3>School Orders</h3>
+{% if school_request %}
 {% for order in school_request %}
-  
-<p>{{order.school.name}}</p>
-<p>{{order.book.title}}</p>
-<p>{{order.status}}</p>
+<table  class="table table-warning table-striped">
+    <tbody id="school-books-row">
+      <tr>
+          <td>{{order.id}}</td>
+          <td>{{order.book}}</td>
+          <td>{{order.status}}</td>                   
+          <td>{{order.quantity}}</td>                   
+       </tr>
+    </tbody>
+  </table>
 {% endfor %}
+{% else %}
+No School Request At the Moment
+{% endif %}
 
 
 <h2>Students Orders</h2>
 
-<table class="table table-success table-striped">
+<table class="table table-warning table-striped">
     <thead>
         <tr>
             <th scope="col">Student</th>
@@ -36,11 +52,10 @@
 
     </tbody>
 </table>
-{{school_id}}
 <form action="{% url 'return_requests' school_id  %}" method="post" id="approve-form">
     {% csrf_token %}
-    <button type="submit">Return Request</button>
+    <button type="submit" class="btn btn-success text-warning rounded-pill col-6 m-auto">Return Request</button>
 </form>
-
+</div>
 
 {% endblock content %}

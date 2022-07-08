@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "student/sidenav.html" %}
+<div class="col d-flex flex-column h-sm-100">
+  <main class="row overflow-auto">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+      <strong>Message: </strong> {{ message }}
+    </div>
+    {% endfor %}
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for book in books %}   
+      <br>
+        <div class="col">
+          <div class="card h-100">
+            {% if book.book.book_cover %}
+            <img src="{{book.book.book_cover.url}}" alt="{{book.book.title}}" class="card-img-top" height="300px">
+            {% else %}
+            <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" height="300px" class="card-img-top"  alt="Skyscrapers" />
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{book.book.title}}</h5>
+              <p class="card-text">
+                {{book.book.about|truncatewords:15}}
+              </p>
+            </div>
+            <p class="px-3 mx-3">
+              <a href="{% url 'book-detail' book.book.id %}" class="btn text-warning btn-success"> Read More</a>
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+  </main>
+
+    <script>
+      document.getElementById("books").classList.add("bg-warning", 'shadow-lg', "px-5", "rounded-pill")
+      setTimeout(function () {
+        document.getElementById('message').style.display = "none";
+      }, 4000);
+    </script>
+    {% endblock content %}

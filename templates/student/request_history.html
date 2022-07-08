@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "student/sidenav.html" %}
+<div class="col d-flex flex-column h-sm-100 ">
+    <main class="row overflow-auto container">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+        <strong>Message: </strong> {{ message }}
+      </div>
+      {% endfor %}
+      
+
+          {% if histories %}
+            
+        <h3>Students Request</h3>
+        <div id="students-table">
+            <table class="table table-warning table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Book</th>
+                        <th scope="col">Request Date</th>
+                        <th scope="col">Returned Date</th>
+                      </tr>
+                </thead>
+                <tbody id="student">
+                    {% for history in histories  %}
+                    <tr>
+                        <td>{{history.book}}</td>
+                        <td>{{history.request_date}}</td>
+                        <td>{{history.returned_date}}</td>
+                        <!-- <td>{{student_request.status}}</td> -->
+                        
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+          <p>No History to show</p>
+        {% endif %}
+
+        
+        <script>
+          document.getElementById("history").classList.add("bg-warning",'shadow-lg', "px-5", "rounded-pill")
+        </script>
+        {% endblock content %}

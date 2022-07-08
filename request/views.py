@@ -109,6 +109,14 @@ def librarian_get_request_details(request, school_id):
     context["school_request"] = school_request
     context["school_id"] = school_id
     
+    if request.method == "POST":
+        student_requests = StudentRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")
+        school_request = SchoolRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")   
+        messages.success(request,  f"{get_object_or_404(School, school_id=school_id)}'s Request has been approved")
+        return redirect("librarian_get_grouped_request")
+    # else:
+        # messages.error(request,  f"Something Went Wrong")    
+        # # return render(request, "librarian/student_request_detail.html", context)
     return render(request, "librarian/student_request_detail.html", context)
 
 
@@ -139,8 +147,12 @@ def approve_requests(request, school_id):
     if request.method == "POST":
         student_requests = StudentRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")
         school_request = SchoolRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")   
-    return redirect("librarian_get_grouped_request")
-
+        messages.success(request,  f"{get_object_or_404(School, school_id=school_id)}'s Request has been approved")
+        return redirect("librarian_get_grouped_request")
+    else:
+        messages.error(request,  f"Something Went Wrong")
+        return
+        
 
 def return_requests(request, school_id):
     #admin approve list of request form school and student
@@ -153,9 +165,10 @@ def return_requests(request, school_id):
             request.book.stock = request.book.stock + 1
             #TODO: flag borrowed of user as false
             request.student.borrowed = False
-            
+            request.returned_date = date.today()
             request.book.save()
             request.student.save()
+            request.save()
         
             
         for request in school_request:        
@@ -163,21 +176,21 @@ def return_requests(request, school_id):
             request.book.stock = request.book.stock + request.quantity
             #TODO: flag the school borrowed as false
             request.school.borrowed = False
-            
+            request.returned_date = date.today()
+
             
             request.book.save()
             request.school.save()
+            request.save()
         
         #TODO: flag all orders as returned        
         student_requests.update(status="Returned")
         school_request.update(status='Returned')   
         
-        messages.success(request, f"Books from {get_object_or_404(School, school_id=school_id).name} have been returned")
+        # messages.success(request, "Books have been Received😊")
         return redirect("librarian_get_grouped_received")
     
-    else:
-        messages.info(request, "Something Went Wrong")
-        return redirect("received-details", school_id=school_id)
+    return redirect("received-details", school_id=school_id)
     
 
 # .update(status="Approved")

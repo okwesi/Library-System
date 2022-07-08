@@ -1,5 +1,6 @@
 from multiprocessing import context
 import re
+from urllib.request import Request
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from books.models import Book
@@ -127,3 +128,20 @@ def school_book_detail(request, id):
 
 def student_dashboard(request):
     books = StudentRequests.objects.filter(student=request.user.student)
+    
+    
+    
+
+####---------------------------------student dahsboard---------------------------
+
+def get_book_history(request):
+    books = StudentRequests.objects.filter(student_id=request.user.student.student_id)
+    return render(request, "student/book_history.html", {"books":books})
+    
+def get_request_history(request):
+    histories = StudentRequests.objects.filter(student_id=request.user.student.student_id, status="Returned")  
+    return render(request, "student/request_history.html", {"histories":histories})
+    
+def get_ongoing_request(request):
+    requests = StudentRequests.objects.filter(student_id=request.user.student.student_id).exclude(status="Returned")
+    return render(request, "student/request_ongoing.html", {"requests":requests})

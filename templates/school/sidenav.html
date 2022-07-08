@@ -10,13 +10,13 @@
                     id="menu">
                     <li class="nav-item" id="overview">
                         <a href="{% url 'school-dashboard' %}" class="nav-link text-success  px-sm-0 px-2" >
-                            <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">OverView</span>
+                            <i class="fs-5 bi-house-fill"></i><span class="ms-1 d-none d-sm-inline">OverView</span>
                         </a>
                     </li>
 
                     <li id="students">
                         <a href="{% url 'get_students' %}" class="nav-link text-success px-sm-0 px-2" >
-                            <i class="fs-5 bi-book"></i><span class="ms-1 d-none d-sm-inline">Students</span></a>
+                            <i class="fs-5 bi-people-fill"></i><span class="ms-1 d-none d-sm-inline">Students</span></a>
                     </li>
                     <!-- <li>
                         <a href="" class="nav-link px-sm-0 px-2">
@@ -29,18 +29,14 @@
                     </li>
                     <li class="" id="approved">
                         <a href="{% url 'school_approved_requests' %}" class="nav-link text-success px-sm-0 px-2" >
-                            <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Approved</span></a>
+                            <i class="fs-5 bi-check-circle-fill"></i><span class="ms-1 d-none d-sm-inline">Approved</span></a>
                     </li>
                     <li id="received">
                         <a href="{% url 'school_received_requests' %}" class="nav-link text-success px-sm-0 px-2" >
-                            <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Received</span></a>
+                            <i class="fs-5 bi-archive-fill"></i><span class="ms-1 d-none d-sm-inline">Received</span></a>
                     </li>
                     
 
-                    <li>
-                        <a href="{% url 'query-librarians' %}" class="nav-link text-success px-sm-0 px-2">
-                            <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">Librarians</span> </a>
-                    </li>
                 </ul>
                 <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"

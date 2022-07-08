@@ -21,7 +21,7 @@ class LibrarianBookListView(ListView):
     model = Book
     template_name = 'librarian/books.html'
     context_object_name = "books"
-    paginate_by = 5
+    paginate_by = 20
     
     def get_queryset(self):
         query = self.request.GET.get('search')
@@ -42,9 +42,12 @@ def add_book(request):
         if form.is_valid():
             print("Form is valid")
             title = form.cleaned_data["title"]
-            form.save()
+            stock = form.cleaned_data["stock"]
+            book_cover = request.FILES["book_cover"]
+            about = form.cleaned_data["about"]
+            book = Book.objects.create(title=title, about=about, book_cover=book_cover, stock=stock, library=request.user.librarian.library)
             messages.info(request, f'{title} has been added')
-            return redirect("books")
+            return redirect("get-books")
         print(form.errors)
     form = BookForm()
     return render(request, 'librarian/add_book.html', {"form":form})
@@ -53,13 +56,15 @@ def add_book(request):
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     
-    form = BookForm(instance=book)
-    
-    if form.is_valid(): 
-        form.save()
-        messages.info(request, f'{book.title} has been updated')
-        return redirect("get-books")
-    
+    if request.method == "POST":
+        form = BookForm(request.POST, request.FILES, instance=book)
+        if form.is_valid(): 
+            form.save()
+            messages.success(request, f'{book.title} has been updated')
+            return redirect("get-books")
+        print(form.errors)
+    form = BookForm(instance=book)    
+    messages.error(request, form.errors)
     return render(request, 'librarian/edit_book.html', {"form":form, "book":book})
     
 
@@ -96,8 +101,10 @@ def book_detail(request, id):
     book = Book.objects.get(id=id)
     if request.user.groups.filter(name="student").exists():
         borrowed = request.user.student.borrowed
-    if request.user.groups.filter(name="school").exists():
+    elif request.user.groups.filter(name="school").exists():
         borrowed = request.user.school.borrowed
+    else:
+        borrowed = False
     request_form = SchoolRequestForm()   
  
     context = {

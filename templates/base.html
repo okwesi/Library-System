@@ -88,7 +88,7 @@
                     </li>
                     {% elif user.groups.all.0.name == "student" %}
                     <li class="nav-item" id="dashboard">
-                        <a class="nav-link text-warning" href="">DashBoard</a>
+                        <a class="nav-link text-warning" href="{% url 'get_books' %}">DashBoard</a>
                     </li>
                     {% endif %}
 

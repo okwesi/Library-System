@@ -5,7 +5,7 @@ from . views import *
 
 
 urlpatterns = [
-        path("login_user", login_user, name="login_user"),
+        path("accounts/login_user", login_user, name="login_user"),
         # url('signup/', UserSignUp.as_view(), name='signup'),
         url('accounts/signup/', signup_student, name='signup_student'),
         url('accounts/school-registration/', signup_school, name='signup_school'),

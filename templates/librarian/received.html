@@ -12,22 +12,47 @@
 
 
 
-{% for request in requests %}
-  {{request}}- {{request.id}}<a href="{% url 'received-details' request.school.school_id %}">details</a> <br>
-{% endfor %}
-
+<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for request in requests %}
+      <br>
+      <div class="col ">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">School: {{request.school}}</h5>
+            <p class="card-text">
+              Request Date:{{request.request_date}}
+            </p>
+            <p class="card-text">
+              Number of request: {{request.count}}
+            </p>
+          </div>
+          <p class="px-3 mx-3">
+          </p>
+          <a href="{% url 'received-details' request.school.school_id %}" class="stretched-link"></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>  
+  
 </main>
 
-<footer class="bg-light py-4 mt-auto text-center">
 
-</footer>
 </div>
 
 </div>
 </div>
 
-
+<style>
+  .card:hover{
+    color:#ffc107;
+    background-color: #198754;
+  }
+</style>
 <script>
-  document.getElementById("received").classList.add("bg-warning", "px-5", "rounded-pill")
+  document.getElementById("received").classList.add("bg-warning", "px-4", "rounded-pill")
+  setTimeout(function () {
+    document.getElementById('message').style.display = "none";
+}, 4000);
 </script>
 {% endblock content %}
+  <!-- {{request}}- {{request.id}}<a href="{% url 'received-details' request.school.school_id %}">details</a> <br> -->

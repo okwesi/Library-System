@@ -17,7 +17,7 @@
     <div class="card h-100 border-0">
         <h3 class="card-title text-center">{{book.title|title}}</h3>
         {% if book.book_cover %}
-        <img src="{{book.book_cover.url}}" alt="{{book.title}}" class="card-img-top" height="300px">
+        <img src="{{book.book_cover.url}}" alt="{{book.title}}" class="card-img-top img-fluid" >
         {% else %}
         <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" height="300px" class="card-img-top"
             alt="Skyscrapers" />
@@ -30,6 +30,7 @@
     </div>
 
 </div>
+{% if not user.groups.all.0.name == "super librarian" or not user.groups.all.0.name == "librarian" %}
 {% if borrowed %}
 you cant borrow a book for now
 {% else %}
@@ -37,6 +38,7 @@ you cant borrow a book for now
 <button type="button" class="btn btn-success text-warning" data-bs-toggle="modal" data-bs-target="#DeleteModal">
     Request
 </button>
+{% endif %}
 {% endif %}
 
 
@@ -65,7 +67,7 @@ you cant borrow a book for now
                     {% csrf_token %}
                     Are you sure you want to request this <b>"{{book.title}}"</b>? <br>
                     {{request_form}}
-                    quantity cannot exceed available stock
+                    <p class="text-danger px-2 my-3">NB: Quantity cannot exceed available stock</p>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Request</button>
@@ -80,5 +82,6 @@ you cant borrow a book for now
 
 <script>
     document.getElementById("bookshelf").classList.add("bg-success", 'shadow-lg', 'rounded-pill', 'px-4')
+    document.getElementById("id_quantity").classList.add("form-control", 'shadow', 'rounded-pill', 'px-4')
 </script>
 {% endblock content %}

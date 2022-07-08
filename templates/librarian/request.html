@@ -2,30 +2,51 @@
 {% block content %}
 {% include "librarian/sidenav.html" %}
 <div class="col d-flex flex-column h-sm-100">
-    <main class="row overflow-auto">
+  <main class="row overflow-auto">
 
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
-            <strong>Message: </strong> {{ message }}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+      <strong>Message: </strong> {{ message }}
+    </div>
+    {% endfor %}
+
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for request in requests %}
+      <br>
+      <div class="col ">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">School: {{request.school}}</h5>
+            <p class="card-text">
+              Request Date:{{request.request_date}}
+            </p>
+            <p class="card-text">
+              Number of request: {{request.count}}
+            </p>
+          </div>
+          <p class="px-3 mx-3">
+          </p>
+          <a href="{% url 'request-details' request.school.school_id %}" class="stretched-link"></a>
         </div>
-        {% endfor %}
-
-
-
-{% for request in requests %}
-  {{request}}- {{request.id}}<a href="{% url 'request-details' request.school.school_id %}">details</a> <br>
-{% endfor %}
-
-</main>
-
-<footer class="bg-light py-4 mt-auto text-center">
-
-</footer>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+  
 </div>
 
 </div>
 </div>
+<style>
+  .card:hover{
+    color:#ffc107;
+    background-color: #198754;
+  }
+</style>
 <script>
-  document.getElementById("requests").classList.add("bg-warning", "px-5", "rounded-pill")
+  document.getElementById("requests").classList.add("bg-warning", "px-4", "rounded-pill")
+  setTimeout(function () {
+    document.getElementById('message').style.display = "none";
+}, 4000);
 </script>
 {% endblock content %}

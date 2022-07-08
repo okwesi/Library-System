@@ -13,6 +13,7 @@ class Book(models.Model):
     library = models.ForeignKey(Library, on_delete=models.CASCADE)
     stock = models.IntegerField(verbose_name="book quantity", null=False)
     book_cover = models.ImageField(upload_to='books/')
+    # datetime = models.DateTimeField(auto_now_add=True,null=True, blank=True)
     def __str__(self):
         return self.title
     

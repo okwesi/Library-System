@@ -1,81 +1,88 @@
 {% extends "base.html" %}
 {% block content %}
 {% include "librarian/sidenav.html" %}
-<div class="col d-flex flex-column h-sm-100">
+<div class="col d-flex flex-column h-sm-100" id="main">
   <main class="row overflow-auto">
 
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+    <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show col-lg-5" role="alert" id="message">
       <strong>Message: </strong> {{ message }}
     </div>
     {% endfor %}
-<div class="row">
-  <a class="btn btn-light col-3  mt-4 mb-4" type="button" href="{% url 'add_books' %}">Add Book</a>
+    <div class="row ">
+      <a class="btn btn-success text-warning my-2 col-3 rounded-pill" type="button" href="{% url 'add_books' %}">Add Book</a>
 
-  <form class="d-flex mt-4 mb-4 col-5" method=" get">
-    <input name="search" value="{{request.GET.search}}" class="form-control  me-2" type="search" placeholder="Search"
-      aria-label="Search">
-    <button class="btn btn-light border border-success" text-primary" type="submit">Search</button>
+      <form class="d-flex my-2 col-8" method=" get">
+        <input name="search" value="{{request.GET.search}}" class="form-control  me-2" type="search"
+          placeholder="Search" aria-label="Search">
+        <button class="btn btn-success text-warning border border-warning" text-primary" type="submit">Search</button>
 
-  </form>
-</div>
+      </form>
+    </div>
 
-  
-    {% for book in books %}
-    <!-- {{books}} <br> -->
-    {{book.title}}
-    <a href="{% url 'edit-book' book.id %}" >-edit</a>
-    <a href="{% url 'delete-book' book.id %}" >-delete</a>
-     <br>
-    {% endfor %}
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for book in books %}
+      <br>
+      <div class="col">
+        <div class="card h-100">
+          {% if book.book_cover %}
+          <img src="{{book.book_cover.url}}" alt="{{book.title}}" class="card-img-top" height="300px">
+          {% else %}
+          <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" height="300px" class="card-img-top"
+            alt="Skyscrapers" />
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{book.title}}</h5>
+            <p class="card-text">
+              {{book.about|truncatewords:15}}
+            </p>
+          </div>
+          <p class="px-3 mx-3">
+            <a href="{% url 'edit-book' book.id %}" class="btn text-warning btn-success">Edit</a>
+            <a href="{% url 'delete-book' book.id %}" class="btn text-warning btn-success">Delete</a>
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
 
   </main>
-
-  <footer class="bg-light py-4 mt-auto text-center">
-    <nav aria-label="Page navigation example" >
+  <footer class="py-4 mt-auto mx-auto">
+    <nav aria-label="Page navigation example">
       {% if is_paginated %}
       <ul class="pagination">
         {% if page_obj.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{page_obj.previous_page_number}}">&laquo; Previous</a>
+        <li class="page-item ">
+          <a class="page-link bg-success text-warning" href="?page={{page_obj.previous_page_number}}">&laquo;
+            Previous</a>
         </li>
         {% else %}
         <li class="page-item disabled">
-          <a class="page-link" href="#">&laquo; Previous</a>
+          <a class="page-link text-success" href="#">&laquo; Previous</a>
         </li>
         {% endif %}
-        {% for i in paginator.page_range %}
-        {% if page_obj.number == i %}
-        <li class="page-item active" aria-current="page">
-          <span class="page-link"><a >{{ i }}</a></span>
-        </li>
-        <!-- <li class="page-item"><a class="page-link active">{{ i }}</a></li> -->
-        {% else %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-        </li>
-        {% endif %}
-        {% endfor %}
         {% if page_obj.has_next %}
         <li class="page-item">
-          <a href="?page={{page_obj.next_page_number}}" class="page-link">Next &raquo;</a>
+          <a href="?page={{page_obj.next_page_number}}" class="page-link bg-success text-warning">Next &raquo;</a>
         </li>
         {% else %}
         <li class="page-item disabled">
-          <a class="page-link">Next &raquo;</a>
+          <a class="page-link text-success">Next &raquo;</a>
         </li>
         {% endif %}
       </ul>
       {% endif %}
     </nav>
   </footer>
-</div>
 
 </div>
-</div>
+
 
 
 <script>
   document.getElementById("books").classList.add("bg-warning", "px-5", "rounded-pill")
+  setTimeout(function () {
+    document.getElementById('message').style.display = "none";
+}, 4000);
 </script>
 {% endblock content %}

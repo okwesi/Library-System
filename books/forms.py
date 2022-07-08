@@ -2,16 +2,15 @@ from django import forms
 from .models import Book
 
 class BookForm(forms.ModelForm):
-    # email = forms.EmailField(widget= forms.EmailInput(attrs={'class': 'form-control'}), required=True)
-    # phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': ('Phone')}), label=("Phone number"), required=True)
-    # password1 = forms.CharField(label='Password',widget= forms.PasswordInput(attrs={'class': 'form-control'}), required=True)
-    # password2 = forms.CharField(label='Confirm Password',widget= forms.PasswordInput(attrs={'class': 'form-control'}), required=True)
-    # full_name = forms.CharField(label="Full Name",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
-    # library = forms.CharField()
+    title = forms.CharField(label="Book Title",max_length=300, widget=forms.TextInput(attrs={'class': 'form-control text-warning'}), required=True)
+    about = forms.Textarea()
+    stock = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control text-warning'}))
+    book_cover = forms.FileField(widget=forms.ClearableFileInput(attrs={"class":"form-control", "capture":"camera", "accept":"image/*"}))
+
    #the widget changes the default styling to to a bootstrap default form stylings
     class Meta:
         model = Book
-        fields = ('title', 'about',  'stock',)
+        fields = ('title', 'about',  'stock', 'book_cover')
         
     
     

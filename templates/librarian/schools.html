@@ -10,7 +10,7 @@
     </div>
     {% endfor %}
 <div class="row">
-  <a class="btn btn-light col-3  mt-4 mb-4" type="button" href="{% url 'signup_school' %}">Add School</a>
+  <a class="btn btn-success text-warning rounded-pill col-3  mt-4 mb-4" type="button" href="{% url 'signup_school' %}">Add School</a>
 
   <!-- <form class="d-flex mt-4 mb-4 col-5" method=" get">
     <input name="search" value="{{request.GET.search}}" class="form-control  me-2" type="search" placeholder="Search"
@@ -23,8 +23,33 @@
   
     {% for school in schools %}
     <!-- {{books}} <br> -->
-    {{school.name}}
-  
+    <br>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{school.name}}</h5>
+          <p class="card-text">
+            {{school.user.email}}
+          </p>
+          <p class="card-text">
+            {{school.user.phone}}
+          </p>
+          <p class="card-text">
+            {{school.locations}}
+          </p>
+          <p class="card-text">
+            {{school.school_number}}
+          </p>
+          <p class="card-text">
+            {{school.gps_location}}
+          </p>
+          <p class="card-text">
+            {{school.borrowed}}
+          </p>
+        </div>
+        
+      </div>
+    </div>  
      <br>
     {% endfor %}
 
@@ -39,5 +64,8 @@
 </div>
 <script>
   document.getElementById("schools").classList.add("bg-warning", "px-5", "rounded-pill")
+  setTimeout(function () {
+    document.getElementById('message').style.display = "none";
+}, 4000);
 </script>
 {% endblock content %}
