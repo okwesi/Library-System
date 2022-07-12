@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container col-lg-8">
+  {% for library in libraries %}
+  <div class="card m-3">
+    <div class="card-title text-center mt-3 ">{{library.name}}</div>
+    <hr>
+    <div class="card-body">
+      <p> Location: {{library.location}}</p>
+      
+    </div>
+    <a href="{% url 'get_public_books' library.id %}" class="stretched-link"></a>
+  </div> {% endfor %}
+</div>
+
+<script>
+  document.getElementById("bookshelf").classList.add("bg-success", 'shadow-lg', 'rounded-pill', 'px-4')
+  setTimeout(function () {
+    document.getElementById('message').style.display = "none";
+  }, 4000);
+</script>
+{% endblock content %}

@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
+from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 
@@ -11,12 +12,14 @@ from django.contrib.auth.models import  Group
 from django.contrib import messages
 from library_app.forms import LibrarianForm
 from library_app.models import Librarian, Library
-from students_school.forms import StudentForm
+from students_school.forms import StudentForm, UpdateStudentForm
 from students_school.models import School, Student
 
 # from users.models import Profile
-# from . forms import EditUserForms, ProfileCreateForm, SignUpForm, PasswordChangeForms
-from .forms import  CreateStudent, SignSchoolUpForm, SignUpForm, PasswordChangeForms
+from . forms import EditUserForms, PasswordChangeForms, UpdateLibrarianForm, UpdateSchoolForm
+from .forms import   SignSchoolUpForm, SignUpForm, PasswordChangeForms
+from django.contrib.auth.views import PasswordChangeView
+from django.views.generic.edit import UpdateView
 
 from django.contrib.auth import get_user_model
 
@@ -239,3 +242,91 @@ def login_user(request):
 
     else:
         return render(request, 'registration/login.html')
+    
+    
+    
+class UpdateUserDetails(UpdateView):
+    """creates forms and allow users to update their details"""
+    form_class = EditUserForms
+    template_name = "users/updateuser.html"
+    success_url = reverse_lazy('home')
+
+    def get_object(self):
+        return self.request.user
+
+
+class PasswordChange(PasswordChangeView):
+    """class for creating forms for users to change their passwords....
+    currently not in use since this class is also provided by the allauth model"""
+    form_class = PasswordChangeForms
+    template_name = 'registration/password_change_form.html'
+    def get_success_url(self, request):
+        if request.user.groups.filter(name='student').exists():
+            return reverse_lazy("get_books")
+        elif request.user.groups.filter(name='school').exists():
+            return reverse_lazy("school-dashboard")
+        elif request.user.groups.filter(name='librarian').exists() or request.user.groups.filter(name='super librarian').exists():
+            return reverse_lazy("school-dashboard")
+        
+        
+def update_librarian(request):
+    user = request.user
+    librarian = request.user.librarian
+    user_form = EditUserForms(instance=user)
+    librarian_form = UpdateLibrarianForm(instance=librarian)
+    if request.method == "POST":
+        user_form = EditUserForms(request.POST,instance=user)
+        librarian_form = UpdateLibrarianForm(request.POST, instance=librarian) 
+        if user_form.is_valid() and librarian_form.is_valid():
+            # user = user_form()
+            # user.email = user_form.cleaned_data.get("email")
+            # user.phone = user_form.cleaned_data.get("phone")
+            user_form.save()
+            librarian_form.save()
+    context = {
+        "user_form" : user_form,
+        "librarian_form" : librarian_form
+    }
+    
+    return render(request, "users/update/librarian.html", context)
+    
+
+def update_school(request):
+    user = request.user
+    school = request.user.school
+    user_form = EditUserForms(instance=user)
+    school_form = UpdateSchoolForm(instance=school)
+    if request.method == "POST":
+        user_form = EditUserForms(request.POST,instance=user)
+        school_form = UpdateSchoolForm(request.POST, instance=school) 
+        if user_form.is_valid() and school_form.is_valid():
+            user_form.save()
+            school_form.save()
+    context = {
+        "user_form" : user_form,
+        "school_form" : school_form
+    }
+    
+    return render(request, "users/update/school.html", context)
+
+
+
+
+def update_student(request):
+    user = request.user
+    student = request.user.student
+    user_form = EditUserForms(instance=user)
+    student_form = UpdateStudentForm(instance=student)
+    if request.method == "POST":
+        user_form = EditUserForms(request.POST,instance=user)
+        student_form = UpdateStudentForm(request.POST, instance=student) 
+        if user_form.is_valid() and student_form.is_valid():
+            user_form.save()
+            student_form.save()
+    context = {
+        "user_form" : user_form,
+        "student_form" : student_form
+    }
+    
+    return render(request, "users/update/student.html", context)
+

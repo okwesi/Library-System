@@ -2,6 +2,15 @@
 
 {% block content %}
   {% include "librarian/sidenav.html" %}
+  <div class="col d-flex flex-column h-sm-100">
+
+  <main class="row overflow-auto container">
+
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+      <strong>Message: </strong> {{ message }}
+    </div>
+    {% endfor %}
   <h2>LIBRARIAN DASHBOARD</h2>
 <h3>UserName: {{user.librarian.full_name | upper}}</h3>
 <h3>LIBRARY: {{user.librarian.library.name | upper}}</h3>

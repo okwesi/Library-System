@@ -67,6 +67,11 @@
                     <li class="nav-item" id="bookshelf">
                         <a class="nav-link text-warning " href="{% url 'public-books' %}">BookShelf</a>
                     </li>
+                    {% else%}
+                    <li class="nav-item" id="bookshelf">
+                        <a class="nav-link text-warning " href="{% url 'public_get_libraries' %}">BookShelf</a>
+                    </li>
+
                     {% endif %}
                     <!-- {% if user.groups.all.0.name == "student"  %}                    
                   
@@ -101,7 +106,7 @@
                 <a class="form-class btn btn-primary" href="{% url 'logout' %}"> Log Out </a>
 
                 {% else %}
-                <a href="{% url 'login_user' %}" class="btn btn-light ms-3">Login</a>
+                <a href="{% url 'login_user' %}?next={{ request.path }}" class="btn btn-light ms-3">Login</a>
                 {% endif %}
             </div>
         </div>

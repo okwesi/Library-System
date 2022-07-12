@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.contrib import messages
 
 from books.models import Book
+from library_app.models import Library
 from request.forms import SchoolRequestForm
 
 # Create your views here.
@@ -116,9 +117,14 @@ def book_detail(request, id):
 
 
 
+def public_get_libraries(request):
+    libraries = Library.objects.all()
+    return render(request, "books/libraries.html", {"libraries" : libraries })
 
 
-
+def get_public_books(request, library_id):
+    books = Book.objects.filter(library = library_id)
+    return render(request, 'books/bookshelf.html', {'books': books})
 
 
 

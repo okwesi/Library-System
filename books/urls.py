@@ -14,9 +14,12 @@ urlpatterns = [
         re_path(r'^$', PublicBookListView.as_view(), name="public-books"),
         path('<uuid:id>/', book_detail, name="book-detail"), 
 
-        
+         
         path('<uuid:id>/', book_detail, name="book-detail"), 
         path('<uuid:book_id>/update', edit_book, name="edit-book"), 
         path('<uuid:book_id>/delete', delete_book, name="delete-book"), 
+        
+        path('libraries/', public_get_libraries, name="public_get_libraries"),
+        path('books/<uuid:library_id>/', get_public_books, name="get_public_books"),
 
 ] 

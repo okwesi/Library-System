@@ -100,16 +100,70 @@ class PasswordChangeForms(PasswordChangeForm):
 
 
 class SignSchoolUpForm(UserCreationForm):
-    email = forms.EmailField(widget= forms.EmailInput(attrs={'class': 'form-control text-warning'}))
+    email = forms.EmailField(widget= forms.EmailInput(attrs={'class': 'form-control text-warning rounded-pill'}))
     # phone = forms.EmailField(widget= forms.EmailInput(attrs={'class': 'form-control'}))
-    password1 = forms.CharField(label='Password',widget= forms.PasswordInput(attrs={'class': 'form-control text-warning'}))
-    password2 = forms.CharField(label='Confirm Password',widget= forms.PasswordInput(attrs={'class': 'form-control text-warning'}))
-    name = forms.CharField(label="School Name",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control text-warning'}))
-    locations = forms.CharField(label="School location",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control text-warning'}))
-    gps_location = forms.CharField(label="Digital Address", max_length=60, widget=forms.TextInput(attrs={'class': 'form-control text-warning'}))
+    password1 = forms.CharField(label='Password',widget= forms.PasswordInput(attrs={'class': 'form-control text-warning rounded-pill'}))
+    password2 = forms.CharField(label='Confirm Password',widget= forms.PasswordInput(attrs={'class': 'form-control text-warning rounded-pill'}))
+    name = forms.CharField(label="School Name",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control text-warning rounded-pill'}))
+    locations = forms.CharField(label="School location",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control text-warning rounded-pill'}))
+    gps_location = forms.CharField(label="Digital Address", max_length=60, widget=forms.TextInput(attrs={'class': 'form-control text-warning rounded-pill'}))
     # library = forms. ModelChoiceField(queryset=Library.objects.all())
    #the widget changes the default styling to to a bootstrap default form stylings
     class Meta:
         model = User
         fields = ('email', 'phone', 'password1', 'password2',  "name", "locations", "gps_location")
 # "name", "location", "school"
+
+class UpdateSchoolForm(forms.ModelForm):
+    name = forms.CharField(label="School Name",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control text-warning rounded-pill'}))
+    locations = forms.CharField(label="School location",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control text-warning rounded-pill'}))
+    gps_location = forms.CharField(label="Digital Address", max_length=60, widget=forms.TextInput(attrs={'class': 'form-control text-warning rounded-pill'}))
+    # library = forms. ModelChoiceField(queryset=Library.objects.all())
+   #the widget changes the default styling to to a bootstrap default form stylings
+    class Meta:
+        model = School
+        fields = ("name", "locations", "gps_location")
+# "name", "location", "school"
+
+
+
+
+        
+class EditUserForms(UserChangeForm):
+    email = forms.EmailField(widget= forms.EmailInput(attrs={'class': 'form-control text-warning rounded-pill'}))
+    
+#the widget changes the default styling to to a bootstrap default form stylings
+    class Meta:
+        model = User
+        fields = ( 'email','phone', "password")
+
+        
+        
+
+class UpdateLibrarianForm(forms.ModelForm):
+    full_name = forms.CharField(label="Full Name",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
+    # library = forms.CharField()
+   #the widget changes the default styling to to a bootstrap default form stylings
+    class Meta:
+        model = User
+        fields = ("full_name", )
+  
+
+
+
+class PasswordChangeForms(PasswordChangeForm):
+    old_password = forms.CharField(widget= forms.PasswordInput(attrs={'class': 'form-control'}))
+    new_password1 = forms.CharField(widget= forms.PasswordInput(attrs={'class': 'form-control'}))
+    new_password2 = forms.CharField(widget= forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    
+#the widget changes the default styling to to a bootstrap default form stylings
+    class Meta:
+        model = User
+        fields = ('old_password', 'new_password1', 'new_password2')
+
+
+
+
+
+

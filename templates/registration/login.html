@@ -26,6 +26,10 @@
             background-size: 100%;
 
         }
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+          }
     </style>
 </head>
 
@@ -59,13 +63,13 @@
                             {% csrf_token%}
                             <!-- 2 column grid layout with text inputs for the first and last names -->
                             <div class="form-outline mb-2">
-                              <input type="text" name="username" id="username" class="form-control text-warning" required  autocomplete="off"/>
+                              <input type="text" name="username" id="username" class="form-control text-warning rounded-pill" required  autocomplete="off"/>
                               <label class="form-label text-success" for="username">Email</label>
                             </div>
             
                             <!-- Password input -->
                             <div class="form-outline mb-2">
-                              <input type="password" name="password" id="password" class="form-control text-warning" value="12345678.we" />
+                              <input type="password" name="password" id="password" class="form-control text-warning rounded-pill" value="12345678.we" />
                               <label class="form-label text-success" for="password">Password</label>
                             </div>
             

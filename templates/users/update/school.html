@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+        background-image: url('https://www.spyghana.com/wp-content/uploads/2014/11/dignitaries-in-a-group-picture-with-the-some-students-and-the-signatories.jpg');
+        background-size: 100%;
+
+    }
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+      }
+</style>
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            {{ form.errors }}
+        </div>
+        {% endif %}
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-10 col-xl-8">
+                <div class="card " style="border-radius: 1rem; background: hsla(0, 0%, 100%, 0.5);
+                backdrop-filter: blur(20px);">
+                    <div class="card-body p-5 ">
+
+                        <h2 class="text-center mx-2 my-1 py-3 text-success">Update School</h2>
+                        <form  method="post">
+                            {% csrf_token%}
+
+                            <h5 class="text-center text-success">Login Information</h5>
+
+                            <!-- Email input -->
+                            <div class="form-outline mb-2">
+                                <!-- <input type="email" name="email" id="email" class="form-control" autocomplete="off"/> -->
+                                {{user_form.email}}
+                                <label class="form-label text-success" for="email">Email address</label>
+                            </div>
+                            <!-- Password input -->
+                            <!-- <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-outline mb-2">
+                                        {{user_form.password}}
+                                        <label class="form-label text-success" for="password">Password</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+
+                                    <div class="form-outline mb-2">
+                                        <!-- <input type="password" name="confirm_password" id="confirm_password" class="form-control" autocomplete="off"/> --
+                                        {{form.password2}}
+                                        <label class="form-label text-success" for="confirm_password">Confirm
+                                            Password</label>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <h5 class="text-center text-success">School Information</h5>
+
+                            <div class="form-outline mb-2">
+                                <!-- <input type="email" name="email" id="email" class="form-control" autocomplete="off"/> -->
+                                {{school_form.name}}
+                                <label class="form-label text-success" for="email">School Name</label>
+                            </div>
+                            <div class="form-outline">
+                                <!-- <input type="text" name="last_name" id="last_name" class="form-control" required autocomplete="off"/> -->
+                                {{user_form.phone}}
+                                <label class="form-label text-success" for="last_name">Phone</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-outline">
+                                        <!-- <input type="text" control" name="first_name" id="first_name"" class="form-control" autocomplete="off"/> -->
+                                        {{school_form.locations}}
+                                        <label class="form-label text-success" for="first_name">City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-outline">
+                                        <!-- <input type="text" name="last_name" id="last_name" class="form-control" required autocomplete="off"/> -->
+                                        {{school_form.gps_location}}
+                                        <label class="form-label text-success" for="last_name">Address</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Submit button -->
+                            <div class="text-center">
+                                <button type="submit"
+                                    class="btn btn-success col-lg-5 col-9 my-3  rounded-pill text-warning">
+                                    Update
+                                </button>
+                                <a class="btn btn-success col-lg-5 col-9 my-3  rounded-pill text-warning" href="{% url 'password_change' %}">Change Password</a>
+
+                            </div>
+
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+<script>
+    document.getElementById("id_phone").classList.add("form-control", "text-warning", "rounded-pill")
+</script>
+
+{% endblock content %}

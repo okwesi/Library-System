@@ -43,7 +43,6 @@ def school_request(request, book_id):
         user.borrowed = True
         # print(user)
         book = get_object_or_404(Book, id=book_id)
-        # TODO use Github Copilot
         if book.stock >= requested_quantity:
             book.stock = book.stock - requested_quantity
             status = "Pending Approval";
@@ -54,7 +53,7 @@ def school_request(request, book_id):
             user.save()
             book.save()
             messages.success(request, "Book Requested successfully")
-            return redirect("school-bookshelf")
+            return redirect("book-detail", id=book_id)
         else:
             request_form = SchoolRequestForm()   
             context = {
@@ -62,7 +61,7 @@ def school_request(request, book_id):
                 "request_form" : request_form       
             }
             messages.error(request, "Book Request unsuccessful, Quantity requested is more quantity at stock")
-            return render(request, "school/school_book_detail.html", context)
+            return redirect("book-detail", id=book_id)
     
    
    
