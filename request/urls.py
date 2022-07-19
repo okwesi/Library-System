@@ -1,5 +1,5 @@
 
-from django.conf.urls import url, include
+# from django.conf.urls import url, include
 from django.urls.conf import path, re_path
 from . views import *
 urlpatterns = [    

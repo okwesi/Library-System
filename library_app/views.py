@@ -5,7 +5,6 @@ from email.message import EmailMessage
 from re import S
 
 # time import_fresh_module
-import pytz
 from books.forms import BookForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -16,9 +15,12 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils import timezone
-from django.utils.encoding import force_bytes, force_text
+# from django.utils.encoding import force_bytes, force_text
+
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from students_school.models import School
+from books.models import Book
+from request.models import SchoolRequests, StudentRequests
+from students_school.models import School, Student
 from users.forms import SignSchoolUpForm
 from users.models import User
 
@@ -29,8 +31,17 @@ from library_app.models import Librarian, Library
 
 def super_dashboard_view(request):
     """function for creating forms to add users then sends a verification link to the email of the user"""
-  
+    school = School.objects.filter(library=request.user.librarian.library).count()
+    books = Book.objects.filter(library=request.user.librarian.library).count()
+    # librarian = Librarian.objects.filter(library=request.user.librarian.library).count()
+    student_requests = StudentRequests.objects.filter(library=request.user.librarian.library).count()
+    school_requests = SchoolRequests.objects.filter(library=request.user.librarian.library).count()
     context = {
+        "school":school,
+        "books":books,
+        # "librarian" : librarian,
+        "student_requests":student_requests,
+        "school_requests": school_requests
     }
     
     return render(request, "librarian/overview.html", context)

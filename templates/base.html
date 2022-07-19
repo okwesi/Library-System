@@ -50,7 +50,7 @@
                 <img
                     src="https://www.library.gov.gh/en/isns/assets/logo/ghlaLogo.png"
                     alt="Logo" class="img-flui" width='40' height="40" />
-                    <h6 class="navar-brand tex">Ghana Library Authority</h6>
+                    <h6 class="navar-brand text-warning">Ghana Library Authority</h6>
                 </a>
     
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -85,7 +85,7 @@
                     </li>
                     {% elif user.groups.all.0.name == "librarian" %}
                     <li class="nav-item" id="dashboard">
-                        <a class="nav-link text-warning" href="{% url 'librarian_dashboard' %}">DashBoard</a>
+                        <a class="nav-link text-warning" href="{% url 'library_admin' %}">DashBoard</a>
                     </li>
                     {% elif user.groups.all.0.name == "school" %}
                     <li class="nav-item" id="dashboard">
@@ -95,6 +95,10 @@
                     <li class="nav-item" id="dashboard">
                         <a class="nav-link text-warning" href="{% url 'get_books' %}">DashBoard</a>
                     </li>
+                    {% elif user.is_superuser %}
+                    <li class="nav-item" id="dashboard">
+                        <a class="nav-link text-warning" id="link" href="">DashBoard</a>
+                    </li>
                     {% endif %}
 
                     <li class="nav-item" id="dashboard">
@@ -102,11 +106,11 @@
                     </li>
                 </ul>
                 {% if user.is_authenticated %}
-                <span class="badge bg-primary">{{user.email}}</span>
-                <a class="form-class btn btn-primary" href="{% url 'logout' %}"> Log Out </a>
+                <!-- <span class="badge bg-primary">{{user.email}}</span> -->
+                <a class="form-class ms-lg-5 btn btn-warning text-success ms-3 rounded-pill" href="{% url 'logout' %}"> Log Out </a>
 
                 {% else %}
-                <a href="{% url 'login_user' %}?next={{ request.path }}" class="btn btn-light ms-3">Login</a>
+                <a href="{% url 'login_user' %}?next={{ request.path }}" class="btn btn-warning text-success ms-3 rounded-pill">Login</a>
                 {% endif %}
             </div>
         </div>
@@ -121,8 +125,12 @@
 </body>
 
 <script src="{% static 'library/javascript/js.js' %}"></script>
-
+<script>   
+    var a = document.getElementById('link'); 
+    a.href = location.origin + "/admin" 
+</script>
 
 
 {% block scripts %}
+
 {% endblock scripts %}

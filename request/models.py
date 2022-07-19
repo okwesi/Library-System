@@ -1,6 +1,7 @@
 from telnetlib import STATUS
 from django.db import models
 from books.models import Book
+from library_app.models import Library
 from students_school.models import School, Student
 
 from users.models import User
@@ -21,7 +22,10 @@ class StudentRequests(models.Model):
     quantity = models.IntegerField(default=1)
     status = models.CharField(max_length=200, choices=STATUS)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    
+    library = models.ForeignKey(Library, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"student-{self.student.name} ----- book-{self.book.title}"
     
     
     
@@ -40,6 +44,7 @@ class SchoolRequests(models.Model):
     quantity = models.IntegerField()
     status = models.CharField(max_length=200, choices=STATUS)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
+    library = models.ForeignKey(Library, on_delete=models.CASCADE, null=True, blank=True)
     
     
     

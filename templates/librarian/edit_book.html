@@ -2,15 +2,15 @@
 
 {% block content %}
 <div class="container col-lg-6 mt-4 py-2">
-  {% for message in messages %}
+    {% for message in messages %}
     <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
-      <strong>Message: </strong> {{ message }}
+        <strong>Message: </strong> {{ message }}
     </div>
     {% endfor %}
-    <div class="card text-success" style="border-radius: 1rem; background: hsla(0, 0%, 100%, 0.5);
+    <div class="card text-success fade-in" style="border-radius: 1rem; background: hsla(0, 0%, 100%, 0.5);
 backdrop-filter: blur(20px);">
         <h2 class="text-center">Edit Book</h2>
-        <form method="POST" enctype="multipart/form-data" class="m-2" >
+        <form method="POST" enctype="multipart/form-data" class="m-2">
             {% csrf_token %}
 
 
@@ -34,7 +34,7 @@ backdrop-filter: blur(20px);">
                     <label class="form-label " for="id_title">Book Cover</label>
                 </div>
                 <div class="col-lg-6">
-                    <img id="blah" src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/book-cover%2Ccover-design-template-5aba4e55a1fbd85eeab260326aca1285_screen.jpg?ts=1637011170" class="img-fluid " width="200" height="200" />
+                    <img id="blah" src="{{book.book_cover.url}}" class="img-fluid " width="200" height="200" />
                 </div>
 
             </div>
@@ -52,7 +52,7 @@ backdrop-filter: blur(20px);">
     document.getElementById("id_book_cover").classList.add("form-control", "", "text-warning")
 </script>
 <script>
-    
+
     id_book_cover.onchange = evt => {
         const [file] = id_book_cover.files
         if (file) {
@@ -70,3 +70,19 @@ backdrop-filter: blur(20px);">
     }
 </style>
 {% endblock scripts %}
+<!-- .fade-in {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 2s;
+}
+
+@keyframes fadeInOpacity {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+} -->

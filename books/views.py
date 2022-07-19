@@ -29,7 +29,7 @@ class LibrarianBookListView(ListView):
         if query:
             object_list = self.model.objects.filter(title__contains=query)
         else:
-            object_list = self.model.objects.all()
+            object_list = self.model.objects.filter(library=self.request.user.librarian.library)
         return object_list
     
     def get_context_data(self, **kwargs):
@@ -89,7 +89,17 @@ class PublicBookListView(ListView):
         if query:
             object_list = self.model.objects.filter(title__contains=query)
         else:
-            object_list = self.model.objects.all()
+            if self.request.user.groups.filter(name='student').exists():
+                object_list = self.model.objects.filter(library=self.request.user.student.school.library)
+            elif self.request.user.groups.filter(name='school').exists():
+                object_list = self.model.objects.filter(library=self.request.user.school.library)
+            else:
+                object_list = self.model.objects.filter(library=self.request.user.librarian.library)
+
+            # elif self.request.user.groups.filter(name='librarian').exists():
+            #     object_list = self.model.objects.all(library=self.request.user.librarian.library)
+            # elif self.request.user.groups.filter(name='super Librarian').exists():
+            #     object_list = self.model.objects.all(library=self.request.user.librarian.library)
         return object_list
     
     def get_context_data(self, **kwargs):
@@ -155,8 +165,9 @@ def get_public_books(request, library_id):
 
 
 
-def get_books(request): 
-    books = Book.objects.filter(library_id=request.user.librarian.library.id)    
+def get_books(request):
+    print(request.user.library.id)
+    books = Book.objects.filter(library=request.user.librarian.library)    
     return render(request, 'librarian/books.html', {'books':books})
 
 # def add_book(request):

@@ -23,7 +23,7 @@ from django.views.generic.edit import UpdateView
 
 from django.contrib.auth import get_user_model
 
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes
 from .tokens import account_activation_token
 
 from django.core.mail import EmailMessage, send_mail
@@ -200,7 +200,7 @@ def create_librarian(request):
             )
             email.send()
             # return render(request, 'try.html', {})
-            return redirect('home')
+            return redirect('query-librarians')
     else:
         form = LibrarianForm()
     return render(request, 'librarian/add_librarian.html', {'form': form})

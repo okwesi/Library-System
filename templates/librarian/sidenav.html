@@ -1,37 +1,67 @@
 <div class="container-fluid overflow-hidden">
-    <div class="row overflow-auto">
-        <div class="col-12 ok col-sm-3 col-xl-2  px-0 border-end border-success d-flex sticky-top">
-            <div
-                class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-2 text-white">
-                <!-- <a href="/" class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none">
+  <div class="row overflow-auto">
+    <div
+      class="col-12 ok col-sm-3 col-xl-2 px-0 border-end border-success d-flex sticky-top"
+    >
+      <div
+        class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-2 text-white"
+      >
+        <!-- <a href="/" class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none">
                   <span class="fs-5">B<span class="d-none d-sm-inline">rand</span></span>
               </a> -->
-                <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start"
-                    id="menu">
-                    <li class="nav-item" id="overview">
-                        <a href="{% url 'library_admin' %}" class="nav-link text-success px-sm-0 px-2">
-                            <i class="fs-5 bi-house-fill"></i><span class="ms-1 d-none d-sm-inline">OverView</span>
-                        </a>
-                    </li>
+        <ul
+          class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start"
+          id="menu"
+        >
+          <li class="nav-item" id="overview">
+            <a
+              href="{% url 'library_admin' %}"
+              class="nav-link text-success px-sm-0 px-2"
+            >
+              <i class="fs-5 bi-house-fill"></i
+              ><span class="ms-1 d-none d-sm-inline">OverView</span>
+            </a>
+          </li>
 
-                    <li id="books">
-                        <a href="{% url 'get-books' %}" class="nav-link text-success  px-sm-0 px-2">
-                            <i class="fs-5 bi-book-fill"></i><span class="ms-1 d-none d-sm-inline">Books</span></a>
-                    </li>
-                    <li id="schools">
-                        <a href="{% url 'get-schools' %}" class="nav-link text-success px-sm-0 px-2">
-                            <i class="fs-5 bi-building"></i><span class="ms-1 d-none d-sm-inline">Schools</span></a>
-                    </li>
-
-                    <li id="requests">
-                        <a href="{% url 'librarian_get_grouped_request' %}" class="nav-link text-success px-sm-0 px-2">
-                            <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Requests</span></a>
-                    </li>
-                    <li id="received">
-                        <a href="{% url 'librarian_get_grouped_received' %}" class="nav-link text-success px-sm-0 px-2">
-                            <i class="fs-5 bi-check-circle-fill"></i><span class="ms-1 d-none d-sm-inline">Received</span></a>
-                    </li>
-                    <!-- <li class="dropdown">
+          <li id="books">
+            <a
+              href="{% url 'get-books' %}"
+              class="nav-link text-success px-sm-0 px-2"
+            >
+              <i class="fs-5 bi-book-fill"></i
+              ><span class="ms-1 d-none d-sm-inline">Books</span></a
+            >
+          </li>
+          {% if user.groups.all.0.name == "super Librarian" %}
+          <li id="schools">
+            <a
+              href="{% url 'get-schools' %}"
+              class="nav-link text-success px-sm-0 px-2"
+            >
+              <i class="fs-5 bi-building"></i
+              ><span class="ms-1 d-none d-sm-inline">Schools</span></a
+            >
+          </li>
+          {% endif %}
+          <li id="requests">
+            <a
+              href="{% url 'librarian_get_grouped_request' %}"
+              class="nav-link text-success px-sm-0 px-2"
+            >
+              <i class="fs-5 bi-table"></i
+              ><span class="ms-1 d-none d-sm-inline">Requests</span></a
+            >
+          </li>
+          <li id="received">
+            <a
+              href="{% url 'librarian_get_grouped_received' %}"
+              class="nav-link text-success px-sm-0 px-2"
+            >
+              <i class="fs-5 bi-check-circle-fill"></i
+              ><span class="ms-1 d-none d-sm-inline">Received</span></a
+            >
+          </li>
+          <!-- <li class="dropdown">
                         <a href="#" class="nav-link dropdown-toggle px-sm-0 px-1" id="dropdown"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fs-5 bi-bootstrap"></i><span class="ms-1 d-none d-sm-inline">Bootstrap</span>
@@ -46,53 +76,86 @@
                             <li><a class="dropdown-item" href="#">Sign out</a></li>
                         </ul>
                     </li> -->
+          {% if user.groups.all.0.name == "super Librarian" %}
 
-                    <li id="librarian">
-                        <a href="{% url 'query-librarians' %}" class="nav-link text-success px-sm-0 px-2">
-                            <i class="fs-5 bi-people-fill"></i><span class="ms-1 d-none d-sm-inline">Librarians</span> </a>
-                    </li>
-                </ul>
-                <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
-                    <a href="#" class="d-flex align-items-center text-success text-decoration-none dropdown-toggle"
-                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <!-- <img src="https://github.com/mdo.png" alt="hugenerd" width="28" height="28"
+          <li id="librarian">
+            <a
+              href="{% url 'query-librarians' %}"
+              class="nav-link text-success px-sm-0 px-2"
+            >
+              <i class="fs-5 bi-people-fill"></i
+              ><span class="ms-1 d-none d-sm-inline">Librarians</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+        <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
+          <a
+            href="#"
+            class="d-flex align-items-center text-success text-decoration-none dropdown-toggle"
+            id="dropdownUser1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <!-- <img src="https://github.com/mdo.png" alt="hugenerd" width="28" height="28"
                             class="rounded-circle"> -->
-                        <span class="d-none d-sm-inline mx-1">{{user.librarian.full_name}}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-success text-success text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item text-success" href="{% url 'password_change' %}">Change Password</a></li>
-                        <li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                        <li><a class="dropdown-item text-success" href="{% url 'update-librarian' %}">Settings</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item text-success" href="{% url 'logout' %}">Sign out</a></li>
-                    </ul>
-                </div>
-            </div>
+            <span class="d-none d-sm-inline mx-1"
+              >{{user.librarian.full_name}}</span
+            >
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-success text-success text-small shadow"
+            aria-labelledby="dropdownUser1"
+          >
+            <li>
+              <a
+                class="dropdown-item text-success"
+                href="{% url 'password_change' %}"
+                >Change Password</a
+              >
+            </li>
+            <li></li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a
+                class="dropdown-item text-success"
+                href="{% url 'update-librarian' %}"
+                >Settings</a
+              >
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a class="dropdown-item text-success" href="{% url 'logout' %}"
+                >Sign out</a
+              >
+            </li>
+          </ul>
         </div>
+      </div>
+    </div>
 
+    <style>
+      @media (min-width: 576px) {
+        .h-sm-100 {
+          height: 100%;
+        }
+      }
 
-        <style>
-            @media (min-width: 576px) {
-                .h-sm-100 {
-                    height: 100%;
-                }
-            }
+      @media only screen and (min-width: 600px) {
+        .ok {
+          max-height: 100%;
+          height: 100vh;
+        }
 
-            @media only screen and (min-width: 600px) {
-                .ok {
-                    max-height: 100%;
-                    height: 100vh;
-                }
+        #main {
+          overflow: auto;
+          max-height: 100vh;
+          overflow-x: hidden;
+        }
+      }
+    </style>
 
-                #main {
-                    overflow: auto;
-                    max-height: 100vh;
-                    overflow-x:hidden;
-                }
-            }
-        </style>

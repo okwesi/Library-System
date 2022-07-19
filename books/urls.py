@@ -1,14 +1,14 @@
 
 from unicodedata import name
-from django.conf.urls import url
+# from django.conf.urls import url
 from django.urls.conf import path,re_path
 from . views import *
 
 
 urlpatterns = [
-        url('add/', add_book, name="add_books"),
+        path('add/', add_book, name="add_books"),
         # url('add-book/', BookAddView.as_view(), name="add-books"),
-        url('get-books/', LibrarianBookListView.as_view(), name="get-books"),
+        path('get-books/', LibrarianBookListView.as_view(), name="get-books"),
         
         
         re_path(r'^$', PublicBookListView.as_view(), name="public-books"),

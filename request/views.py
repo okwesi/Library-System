@@ -17,11 +17,12 @@ def student_request(request, book_id):
         user = request.user.student
         book = get_object_or_404(Book, id=book_id)
         school = request.user.student.school
+        library = request.user.student.school.library
         if book.stock > 0:
             status = "Pending Approval";
             user.borrowed = True
             book.stock = book.stock - 1
-            student_request = StudentRequests(student=user, book=book, status=status, school=school )
+            student_request = StudentRequests(student=user, book=book, status=status, school=school, library=library )
             student_request.save()  
             book.save()      
             user.save()
@@ -40,6 +41,7 @@ def school_request(request, book_id):
         print (form.cleaned_data.get("quantity"))
         requested_quantity = form.cleaned_data.get("quantity")
         user = request.user.school
+        library = request.user.school.library
         user.borrowed = True
         # print(user)
         book = get_object_or_404(Book, id=book_id)
@@ -48,7 +50,7 @@ def school_request(request, book_id):
             status = "Pending Approval";
             quantity = requested_quantity
             
-            school_request = SchoolRequests(school=user, book=book, status=status, quantity=quantity)
+            school_request = SchoolRequests(school=user, book=book, status=status, quantity=quantity, library=library)
             school_request.save()        
             user.save()
             book.save()
@@ -85,14 +87,14 @@ def librarian_student_request(request):
         data.append(student_request_data)
     return JsonResponse({'data':data})
 
-# Todo: https://www.bootdey.com/snippets/view/bs4-card-widget
 
 def librarian_requests(request):
-    requests = StudentRequests.objects.raw(f"select id,school_id, request_date,  count(*) count from (select id,school_id, status, student_id, request_date from request_studentrequests where status = 'Pending Approval' and request_date <= '{date.today()}') group by school_id ")
+    requests = StudentRequests.objects.raw(f"select id,school_id, request_date,  count(*) count from (select id,school_id, status, student_id, request_date from request_studentrequests where status = 'Pending Approval' and request_date <= '{date.today()}' and library_id='{request.user.librarian.library.id.hex}') group by school_id ")
+    
     return render(request, 'librarian/request.html', {"requests":requests})
 
 def librarian_received(request):
-    requests = StudentRequests.objects.raw(f"select id,school_id, request_date,  count(*) count from (select id,school_id, status, student_id, request_date from request_studentrequests where status = 'Received' ) group by school_id ")
+    requests = StudentRequests.objects.raw(f"select id,school_id, request_date,  count(*) count from (select id,school_id, status, student_id, request_date from request_studentrequests where status = 'Received' and library_id='{request.user.librarian.library.id.hex}' ) group by school_id ")
     return render(request, 'librarian/received.html', {"requests":requests})
 
 
