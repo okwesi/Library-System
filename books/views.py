@@ -93,13 +93,16 @@ class PublicBookListView(ListView):
                 object_list = self.model.objects.filter(library=self.request.user.student.school.library)
             elif self.request.user.groups.filter(name='school').exists():
                 object_list = self.model.objects.filter(library=self.request.user.school.library)
-            else:
-                object_list = self.model.objects.filter(library=self.request.user.librarian.library)
+            # else:
+            #     object_list = self.model.objects.filter(library=self.request.user.librarian.library)
 
-            # elif self.request.user.groups.filter(name='librarian').exists():
-            #     object_list = self.model.objects.all(library=self.request.user.librarian.library)
-            # elif self.request.user.groups.filter(name='super Librarian').exists():
-            #     object_list = self.model.objects.all(library=self.request.user.librarian.library)
+            elif self.request.user.groups.filter(name='librarian').exists():
+                object_list = self.model.objects.all(library=self.request.user.librarian.library)
+            elif self.request.user.groups.filter(name='super Librarian').exists():
+                object_list = self.model.objects.filter(library=self.request.user.librarian.library)
+            else:
+                object_list = self.model.objects.all()
+
         return object_list
     
     def get_context_data(self, **kwargs):

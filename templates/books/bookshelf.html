@@ -42,6 +42,10 @@
             <p class="card-text">
               {{book.about|truncatewords:15}}
             </p>
+            <p>
+              Available: {{book.stock}}
+            </p>
+            <p>{{book.library.name}}</p>
           </div>
           <p class="px-3 mx-3">
             <a href="{% url 'book-detail' book.id %}" class="btn text-warning btn-success"> Read More</a>
