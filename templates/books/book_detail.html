@@ -34,17 +34,25 @@
         </div>
     </div>
 
+    {% if user.is_authenticated %}
+    {% if  not user.is_superuser or not user.groups.all.0.name == "super librarian" or not user.groups.all.0.name == "librarian" %}
+    {% if borrowed %}
+    <div class="alert alert-danger" role="alert">
+        You can not Request a Book. You already have an ongoing Request
+    </div>
+    {% else %}
+    
+    <button type="button" class="btn btn-success text-warning rounded-pill col-lg-6 col-9" data-bs-toggle="modal" data-bs-target="#DeleteModal">
+        Request
+    </button>
+    {% endif %}
+    {% endif %}
+    {% else %}
+    <div class="alert alert-warning text-center" role="alert">
+        Login to Request
+    </div>
+    {% endif %}
 </div>
-{% if not user.groups.all.0.name == "super librarian" or not user.groups.all.0.name == "librarian" %}
-{% if borrowed %}
-you cant borrow a book for now
-{% else %}
-
-<button type="button" class="btn btn-success text-warning" data-bs-toggle="modal" data-bs-target="#DeleteModal">
-    Request
-</button>
-{% endif %}
-{% endif %}
 
 
 

@@ -5,6 +5,11 @@
     <h1>HOME PAGE</h1><br>
 </div> -->
 <!-- Jumbotron -->
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show text-center" role="alert" id="message">
+  <strong>Message: </strong> {{ message }}
+</div>
+{% endfor %}
 <div class="bg-image p-5 text-center shadow-1-strong  mb-5 text-white"
   style=" height: 80vh; background-image: url('https://citinewsroom.com/wp-content/uploads/2022/06/Youth-Engagement-Centre3.jpg');box-shadow: inset 0 0 0 1000px rgba(41, 33, 33, 0.4);">
   <p class="d-flex flex-column">
@@ -107,6 +112,8 @@
             This is a wider card with supporting text below as a natural lead-in to
             additional content. This content is a little bit longer.
           </p>
+          <p class="text-success ">Don't have an account?<a href="{% url 'signup_student' %}">Join Us</a> </p>
+
         </div>
     </div>
 
@@ -199,7 +206,7 @@
 
 
 
-<!-- Jumbotron
+Jumbotron
 <table class="table">
   <tbody>
     <tr>
@@ -337,5 +344,10 @@ GA-1826363
 </style>
 <script>
   document.getElementById("home").classList.add("bg-success", 'shadow-lg', 'rounded-pill', 'px-4')
+</script>
+<script>
+  setTimeout(function () {
+      document.getElementById('message').style.display = "none";
+  }, 5000);
 </script>
 {% endblock content %}

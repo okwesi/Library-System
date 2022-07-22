@@ -10,7 +10,7 @@
       <h2>
         School Request
       </h2>
-      <table class="table table-info table-striped">
+      <table class="table table-warning table-striped">
         <tbody id="school-books-row">
           <tr>
             <td>{{school_request.id}}</td>
@@ -22,13 +22,15 @@
       </table>
     </div>
     {% else %}
-    <p>No Requests For School</p>
+    <div class="alert alert-warning" role="alert">
+      <p>No Requests For School</p>
+    </div>
     {% endif %}
      
     {% if student_requests %}
     <h2>Students</h2>
     <div id="students-table">
-      <table class="table table-info table-striped">
+      <table class="table table-warning table-striped">
         <thead>
           <tr>
             <th scope="col">Book</th>
@@ -51,7 +53,9 @@
       </table>
     </div>
     {% else %}
-    <p>No Student Request</p>
+    <div class="alert alert-warning" role="alert">
+      <p>No Student Request</p>
+    </div>
     {% endif %}
 
 

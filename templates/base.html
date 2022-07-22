@@ -106,7 +106,8 @@
                     </li>
                 </ul>
                 {% if user.is_authenticated %}
-                <!-- <span class="badge bg-primary">{{user.email}}</span> -->
+                <span class="badge bg-warning text-success">{{user.email}}</span>
+                <span class="badge bg-warning text-success">{{user.groups.all.0.name}}</span>
                 <a class="form-class ms-lg-5 btn btn-warning text-success ms-3 rounded-pill" href="{% url 'logout' %}"> Log Out </a>
 
                 {% else %}

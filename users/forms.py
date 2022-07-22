@@ -101,7 +101,7 @@ class PasswordChangeForms(PasswordChangeForm):
 
 class SignSchoolUpForm(UserCreationForm):
     email = forms.EmailField(widget= forms.EmailInput(attrs={'class': 'form-control text-warning rounded-pill'}))
-    # phone = forms.EmailField(widget= forms.EmailInput(attrs={'class': 'form-control'}))
+    phone = forms.CharField(widget= forms.TextInput(attrs={'class': 'form-control text-warning rounded-pill'}))
     password1 = forms.CharField(label='Password',widget= forms.PasswordInput(attrs={'class': 'form-control text-warning rounded-pill'}))
     password2 = forms.CharField(label='Confirm Password',widget= forms.PasswordInput(attrs={'class': 'form-control text-warning rounded-pill'}))
     name = forms.CharField(label="School Name",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control text-warning rounded-pill'}))

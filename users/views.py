@@ -23,7 +23,7 @@ from django.views.generic.edit import UpdateView
 
 from django.contrib.auth import get_user_model
 
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes,force_text
 from .tokens import account_activation_token
 
 from django.core.mail import EmailMessage, send_mail
@@ -80,8 +80,11 @@ def signup_student(request):
             school = School.objects.get(school_number=form.cleaned_data.get("school_number"))
             # print(request.user.librarian.library)
             user = form.save()
-            # user.is_active = False
-            # user.save()
+            # email = form.cleaned_data.get("email"),
+            # password1 = form.cleaned_data.get("password1")
+            # password2 = form.cleaned_data.get("password2")
+            user.is_active = False
+            user.save()
             #adds a group to the user
             user_group = Group.objects.get(name='student')
             user.groups.add(user_group)
@@ -111,7 +114,7 @@ def signup_student(request):
                         mail_subject, message, to=[to_email]
             )
             email.send()
-            # # return render(request, 'try.html', {})
+            messages.info(request, "Validate your registration in your email")
             return redirect('home')
     else:
         form = StudentForm()
@@ -121,7 +124,6 @@ def signup_student(request):
 
 def signup_school(request):
     """function for creating forms to add users then sends a verification link to the email of the user"""
-    print("open")
     if request.method == 'POST':
         print("post")
         form = SignSchoolUpForm(request.POST, auto_id="school_%s")
@@ -129,7 +131,6 @@ def signup_school(request):
         # print(form.errors)
         # print(form.non_field_errors)
         if form.is_valid():
-            print("valid")
             # save form in the memory not in database
             user = form.save()
             #adds a group to the user
@@ -220,7 +221,8 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return render(request, 'users/activate_success.html', {})
+        messages.success(request, "Registration Validated, Please Login")
+        return redirect("home")
         # return(request, 'home.html', {})
     else:
         return HttpResponse('Activation link is invalid!')

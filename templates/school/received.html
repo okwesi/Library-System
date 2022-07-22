@@ -29,7 +29,9 @@
             </table>
           </div>
           {% else %}
-          <p>No Approved Requests For School</p>
+          <div class="alert alert-warning" role="alert">
+            <p>No Recieved Requests For School</p>
+          </div>
           {% endif %}
 
           {% if student_requests %}
@@ -59,7 +61,9 @@
             </table>
         </div>
         {% else %}
+        <div class="alert alert-warning" role="alert">
           <p>No Approved Requests For Students</p>
+        </div>
         {% endif %}
 
         
