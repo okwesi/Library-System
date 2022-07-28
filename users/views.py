@@ -1,4 +1,3 @@
-import random
 from django.shortcuts import get_object_or_404, redirect, render
 
 from django.contrib.sites.shortcuts import get_current_site
@@ -9,6 +8,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import  Group
+from .models import User as passwordgen
+# from django.contrib.auth import  User
 from django.contrib import messages
 from library_app.forms import LibrarianForm
 from library_app.models import Librarian, Library
@@ -166,7 +167,9 @@ def signup_school(request):
 
     else:
         form = SignSchoolUpForm()
-    return render(request, 'librarian/signup_school.html', {'form': form})
+        password = passwordgen.objects.make_random_password()
+
+    return render(request, 'librarian/signup_school.html', {'form': form, "password":password})
 
 
 
@@ -176,8 +179,12 @@ def create_librarian(request):
     if request.method == 'POST':
         form = LibrarianForm(request.POST)
         if form.is_valid():
-            print(form.data)
+            # print(form.data)
             #save form in the memory not in database
+            # email = form.cleaned_data.get("email")
+            # phone = form.cleaned_data.get("phone")
+            # user = User.objects.create(email=email, password=password, phone=phone)
+
             user = form.save()
             #adds a group to the user
             user_group = Group.objects.get(name='librarian')
@@ -189,11 +196,11 @@ def create_librarian(request):
                 library = request.user.librarian.library)
 
             current_site = get_current_site(request)
-            mail_subject = 'Activation link has been sent to your email id'
+            mail_subject = 'Email and passowrd'
             message = render_to_string('users/acc_active_email_librarians.html', {
                 'user': user,
                 'domain': current_site.domain,
-                "user_password" :  form.cleaned_data.get('password1')
+                "user_password" :  form.cleaned_data.get("password1")
             })
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(
@@ -204,7 +211,10 @@ def create_librarian(request):
             return redirect('query-librarians')
     else:
         form = LibrarianForm()
-    return render(request, 'librarian/add_librarian.html', {'form': form})
+        password = passwordgen.objects.make_random_password()
+        print(password)
+            
+    return render(request, 'librarian/add_librarian.html', {'form': form, "password":password})
 
 
 

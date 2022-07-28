@@ -24,10 +24,23 @@ backdrop-filter: blur(20px);">
                 {{form.about}}
                 <label class="form-label" for="id_description">About Book</label>
             </div>
-            <div class="form-outline mb-4">
-                {{form.stock}}
-                <label class="form-label" for="id_title">Stock</label>
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <div class="form-outline mb-4">
+                        {{form.stock}}
+                        <label class="form-label" for="id_title">Stock</label>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-outline mb-2">
+                        {{form.category}}
+                        
+                         <label class="form-label text-success" for="id_category">Select Category
+                        </label>
+                    </div>
+                </div>
             </div>
+
             <div class="row mb-4">
                 <div class="form-outline  col-lg-6">
                     {{form.book_cover}}
@@ -48,8 +61,9 @@ backdrop-filter: blur(20px);">
 {% endblock content %}
 {% block scripts %}
 <script>
+    document.getElementById("id_category").classList.add("form-select", "text-warning")
     document.getElementById("id_about").classList.add("form-control", "text-warning")
-    document.getElementById("id_book_cover").classList.add("form-control", "", "text-warning")
+    document.getElementById("id_book_cover").classList.add("form-control","text-warning")
 </script>
 <script>
 
@@ -68,6 +82,7 @@ backdrop-filter: blur(20px);">
         background-size: 100%;
 
     }
+    
 </style>
 {% endblock scripts %}
 <!-- .fade-in {

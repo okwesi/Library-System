@@ -10,7 +10,7 @@
     </div>
     {% endfor %}
 <div class="row">
-  <a class="btn btn-success text-warning rounded-pill col-3  mt-4 mb-4" type="button" href="{% url 'signup_school' %}">Add School</a>
+  <a class="btn btn-success text-warning rounded-pill col-lg-3  mt-4 mb-4" type="button" href="{% url 'signup_school' %}">Add School</a>
 
   <!-- <form class="d-flex mt-4 mb-4 col-5" method=" get">
     <input name="search" value="{{request.GET.search}}" class="form-control  me-2" type="search" placeholder="Search"
@@ -24,7 +24,7 @@
     {% for school in schools %}
     <!-- {{books}} <br> -->
     <br>
-    <div class="col">
+    <div class="col m-2">
       <div class="card h-100">
         <div class="card-body">
           <h5 class="card-title">{{school.name}}</h5>

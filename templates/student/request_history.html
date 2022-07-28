@@ -7,7 +7,7 @@
       {% for message in messages %}
       <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
         <strong>Message: </strong> {{ message }}
-      </div>
+      {% comment %} </div> {% endcomment %}
       {% endfor %}
       
 

@@ -1,80 +1,196 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %} 
 {% include "librarian/sidenav.html" %}
+
 <div class="col d-flex flex-column h-sm-100">
-
-  <main class="row overflow-auto container">
-
+  <main class="row overflow-auto container" id="main">
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+    <div
+      class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show"
+      role="alert"
+      id="message"
+    >
       <strong>Message: </strong> {{ message }}
     </div>
     {% endfor %}
     <h2 class="text-center my-2">Librarian DashBoard</h2>
-    
+    <div class="card my-5" style="">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img
+            src="https://geminioffice.co.uk/wp-content/uploads/2018/11/silhouette-unisex.png"
+            class="img-fluid rounded-start"
+            alt="..."
+            width="150"
+            height="150"
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              Group: {{user.groups.all.0.name | title}}
+            </h5>
+            <p class="card-text">
+              Full Name: {{user.librarian.full_name | title}}
+            </p>
+            <p class="card-text">
+              Library: {{user.librarian.library.name | title}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="container">
       <div class="row">
-        <div class="col-md col-lg-3 ">
-          <div class="card  bg-primary text-light">
+        <div class="col-md col-lg-3">
+          <div class="card bg-primary text-light">
             <div class="card-header text-center">Books</div>
             <div class="card-body">
               <h1 class="card-titl">{{books}}</h1>
             </div>
-            <div class="card-footer text-end">More info <i class="fs-5 bi-arrow-right-circle-fill
-          "></i></div>
+            <div class="card-footer text-end">
+              More info <i class="fs-5 bi-arrow-right-circle-fill"></i>
+            </div>
           </div>
         </div>
         <div class="col-md col-lg-3">
-          <div class="card  bg-success text-light">
+          <div class="card bg-success text-light">
             <div class="card-header text-center">Schools</div>
             <div class="card-body">
               <h1 class="card-titl">{{school}}</h1>
             </div>
-            <div class="card-footer text-end">More info <i class="fs-5 bi-arrow-right-circle-fill
-          "></i></div>
+            <div class="card-footer text-end">
+              More info <i class="fs-5 bi-arrow-right-circle-fill"></i>
+            </div>
           </div>
         </div>
         <div class="col-md col-lg-3">
-          <div class="card  bg-warning text-light">
+          <div class="card bg-warning text-light">
             <div class="card-header text-center">Student Requests</div>
             <div class="card-body">
               <h1 class="card-titl">{{student_requests}}</h1>
             </div>
-            <div class="card-footer text-end">More info <i class="fs-5 bi-arrow-right-circle-fill
-          "></i></div>
+            <div class="card-footer text-end">
+              More info <i class="fs-5 bi-arrow-right-circle-fill"></i>
+            </div>
           </div>
         </div>
         <div class="col-md col-lg-3">
-          <div class="card  bg-danger text-light">
+          <div class="card bg-danger text-light">
             <div class="card-header text-center">School Requests</div>
             <div class="card-body">
               <h1 class="card-titl">{{school_requests}}</h1>
             </div>
-            <div class="card-footer text-end">More info <i class="fs-5 bi-arrow-right-circle-fill
-          "></i></div>
+            <div class="card-footer text-end">
+              More info <i class="fs-5 bi-arrow-right-circle-fill"></i>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="card my-5" style="">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <img src="https://geminioffice.co.uk/wp-content/uploads/2018/11/silhouette-unisex.png" class="img-fluid rounded-start" alt="..." width="150" height="150">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">Group: {{user.groups.all.0.name | title}}</h5>
-            <p class="card-text">Full Name: {{user.librarian.full_name | title}}</p>
-            <p class="card-text">Library: {{user.librarian.library.name | title}}</p>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-2 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <div >
+            <canvas id="school_requests_chart" width="200" height="200"></canvas>
           </div>
         </div>
       </div>
-    </div>
+      <div class="col">
+        <div class="card h-100">
+          <div >
+            <canvas id="category_chart" width="200" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+    <div>
+   
 
-    <script>
-      document.getElementById("overview").classList.add("bg-warning", "px-5", "rounded-pill")
-      document.getElementById("dashboard").classList.add("bg-success", 'shadow-lg', 'rounded-pill', 'px-4')
-    </script>
-    {% endblock content %}
+   
+  </main>
+</div>
+
+<script>
+  document
+    .getElementById("overview")
+    .classList.add("bg-warning", "px-5", "rounded-pill");
+  document
+    .getElementById("dashboard")
+    .classList.add("bg-success", "shadow-lg", "rounded-pill", "px-4");
+</script>
+<script>
+  const ctx2 = document.getElementById('school_requests_chart').getContext('2d');
+  const myChart = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+          labels: [ {% for item in requests %}'{{item.school.name}}',{% endfor %}],
+          datasets: [{
+              label: 'School Requests',
+              data: [{% for item in requests %}{{item.count}},{% endfor %}],
+              backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+</script>
+
+<script>
+  const ctx1 = document.getElementById('category_chart').getContext('2d');
+  const myChart1 = new Chart(ctx1, {
+      type: 'polarArea',
+      data: {
+          labels: [ {% for item in category_data %}'{{item.name}}',{% endfor %}],
+          datasets: [{
+              label: 'School Requests',
+              data: [{% for item in category_data %}{{item.number_of_request}},{% endfor %}],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+</script>
+{% endblock content %}

@@ -1,4 +1,5 @@
 import datetime
+from pprint import pprint
 from django.http import  JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
@@ -90,7 +91,6 @@ def librarian_student_request(request):
 
 def librarian_requests(request):
     requests = StudentRequests.objects.raw(f"select id,school_id, request_date,  count(*) count from (select id,school_id, status, student_id, request_date from request_studentrequests where status = 'Pending Approval' and request_date <= '{date.today()}' and library_id='{request.user.librarian.library.id.hex}') group by school_id ")
-    
     return render(request, 'librarian/request.html', {"requests":requests})
 
 def librarian_received(request):
@@ -111,8 +111,17 @@ def librarian_get_request_details(request, school_id):
     context["school_id"] = school_id
     
     if request.method == "POST":
-        student_requests = StudentRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")
-        school_request = SchoolRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")   
+        request_list = request.POST.getlist("boxes")
+        school_request_id = request.POST.get("box")
+        print(school_request_id)
+        
+        for request in request_list:
+            StudentRequests.objects.filter(id=int(request),school_id=school_id, status="Pending Approval").update(status="Approved")
+
+        # student_requests = StudentRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")
+        if school_request_id:
+            print(school_request_id)
+            SchoolRequests.objects.filter(id=int(school_request_id), school_id=school_id, status="Pending Approval").update(status="Approved")   
         messages.success(request,  f"{get_object_or_404(School, school_id=school_id)}'s Request has been approved")
         return redirect("librarian_get_grouped_request")
     # else:
@@ -146,49 +155,56 @@ def calculate_date_with_days(date, days):
 def approve_requests(request, school_id):
     #admin approve list of request form school and student
     if request.method == "POST":
-        student_requests = StudentRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")
-        school_request = SchoolRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")   
+        request_list = request.POST.getlist("boxes")
+        print(request_list)
+        # student_requests = StudentRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")
+        # school_request = SchoolRequests.objects.filter(school_id=school_id, status="Pending Approval").update(status="Approved")   
         messages.success(request,  f"{get_object_or_404(School, school_id=school_id)}'s Request has been approved")
         return redirect("librarian_get_grouped_request")
     else:
         messages.error(request,  f"Something Went Wrong")
-        return
+        return render(request, "librarian/student_received_detail.html")
+ 
         
 
 def return_requests(request, school_id):
     #admin approve list of request form school and student
     if request.method == "POST":
-        student_requests = StudentRequests.objects.filter(school_id=school_id, status="Received")
-        school_request = SchoolRequests.objects.filter(school_id=school_id, status="Received")   
-    
-        for request in student_requests:
-            #TODO: increase the book quantity by one        
-            request.book.stock = request.book.stock + 1
-            #TODO: flag borrowed of user as false
-            request.student.borrowed = False
-            request.returned_date = date.today()
-            request.book.save()
-            request.student.save()
-            request.save()
-        
-            
-        for request in school_request:        
-            #TODO: For school get the quantity and add it to the book stock
-            request.book.stock = request.book.stock + request.quantity
-            #TODO: flag the school borrowed as false
-            request.school.borrowed = False
-            request.returned_date = date.today()
 
+        request_list = request.POST.getlist("boxes")
+        # print(request_list)
+        school_request_box = request.POST.get("box")
+        # print(school_request_box)
+        # print(school_request_box)
+        if len(request_list) != 0:
+            for request in request_list:
+                student_request = StudentRequests.objects.filter(id=int(request), school_id=school_id, status="Received").first()
+                #TODO: increase the book quantity by one 
+                student_request.book.stock = student_request.book.stock + 1
+                #TODO: flag borrowed of user as false
+                student_request.student.borrowed = False
+                student_request.returned_date = date.today()
+                student_request.book.save()
+                student_request.student.save()
+                student_request.status = "Returned"
+                student_request.save()
             
-            request.book.save()
-            request.school.save()
-            request.save()
+        if school_request_box:
+            print(school_request_box)
+            school_request = SchoolRequests.objects.filter(id=int(school_request_box),school_id=school_id, status="Received").first()  
+            #TODO: For school get the quantity and add it to the book stock
+            school_request.book.stock = school_request.book.stock + school_request.quantity
+            # #TODO: flag the school borrowed as false
+            school_request.school.borrowed = False
+            school_request.returned_date = date.today()            
+            school_request.book.save()
+            school_request.school.save()
+            school_request.status = 'Returned'
+            school_request.save()
         
-        #TODO: flag all orders as returned        
-        student_requests.update(status="Returned")
-        school_request.update(status='Returned')   
-        
-        # messages.success(request, "Books have been Received😊")
+            # #TODO: flag all orders as returned        
+               
+            
         return redirect("librarian_get_grouped_received")
     
     return redirect("received-details", school_id=school_id)
@@ -211,19 +227,9 @@ def School_requests(request):
     school_request = SchoolRequests.objects.filter(school_id=request.user.school.school_id, status="Pending Approval").first()
     # get_object_or_404(SchoolRequests, school_id=request.user.school.school_id, status="Pending Approval")
 
-    # data = []    
-    # for book_request in student_requests:
-    #     student = get_object_or_404(Student, student_id=book_request.student_id)
-    #     book_request_data = {
-    #         "id" : book_request.id,
-    #         "book" : get_object_or_404(Book, id=book_request.book_id).title,
-    #         "student" : student.name,
-    #         "student_class" : student.school_class,
-    #         "status" : book_request.status,
-    #     }
-    #     data.append(book_request_data)
-    
-    # return JsonResponse({'data': data})
+    request_list = request.POST.getlist("boxes")
+    for id in request_list:
+        print(id)
     context = {
         "school_request" : school_request,
         "student_requests" : student_requests
@@ -264,14 +270,26 @@ def school_approved_requests(request):
     }
     return render(request, 'school/approved.html', context)
 
-
+#TODO generate random password
 
 
 def School_set_received(request):
     if request.method == "POST":
-        student_requests = StudentRequests.objects.filter(school_id=request.user.school.school_id, status="Approved").update(status="Received")
-        school_request = SchoolRequests.objects.filter(school_id=request.user.school.school_id, status="Approved").update(status="Received")
-        messages.success(request, "Books have been Received😊")
+        # student_requests = StudentRequests.objects.filter(school_id=request.user.school.school_id, status="Approved").update(status="Received")
+        # school_request = SchoolRequests.objects.filter(school_id=request.user.school.school_id, status="Approved").update(status="Received")
+        
+        request_list = request.POST.getlist("boxes")
+        school_request = request.POST.get("box")
+        
+        for id in request_list:
+            print(id)
+            StudentRequests.objects.filter(id=id,school_id=request.user.school.school_id, status="Approved").update(status="Received")
+
+        print(school_request)
+        school_request = SchoolRequests.objects.filter(id=school_request,school_id=request.user.school.school_id, status="Approved").update(status="Received")
+        
+        
+        messages.success(request, "Books have been Received")
         return redirect('school_received_requests')
     else:
         messages.warning(request, "Something Went Wrong")

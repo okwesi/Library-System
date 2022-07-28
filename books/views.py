@@ -10,7 +10,7 @@ from books.forms import BookForm
 from django.urls import reverse
 from django.contrib import messages
 
-from books.models import Book
+from books.models import Book, Category
 from library_app.models import Library
 from request.forms import SchoolRequestForm
 
@@ -34,24 +34,34 @@ class LibrarianBookListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["category"] = Category.objects.filter(library=self.request.user.librarian.library)
         return context
 
 
 def add_book(request):
     if request.method == "POST":
         form = BookForm(request.POST, request.FILES)
+        form.fields["category"].queryset = Category.objects.filter(library=request.user.librarian.library)
+
         if form.is_valid():
             print("Form is valid")
-            title = form.cleaned_data["title"]
-            stock = form.cleaned_data["stock"]
-            book_cover = request.FILES["book_cover"]
-            about = form.cleaned_data["about"]
-            book = Book.objects.create(title=title, about=about, book_cover=book_cover, stock=stock, library=request.user.librarian.library)
-            messages.info(request, f'{title} has been added')
+            category = request.POST.get("category")
+            print(category)
+            # title = form.cleaned_data["title"]
+            # stock = form.cleaned_data["stock"]
+            # book_cover = request.FILES["book_cover"]
+            # about = form.cleaned_data["about"]
+
+            # book = Book.objects.create(title=title, about=about, book_cover=book_cover,
+            #  stock=stock, library=request.user.librarian.library, category=category)
+            # messages.info(request, f'{title} has been added')
             return redirect("get-books")
         print(form.errors)
     form = BookForm()
-    return render(request, 'librarian/add_book.html', {"form":form})
+    form.fields["category"].queryset = Category.objects.filter(library=request.user.librarian.library)
+
+    # category = Category.objects.filter(library=request.user.librarian.library_id)
+    return render(request, 'librarian/add_book.html', {"form":form,})
         
 
 def edit_book(request, book_id):
@@ -59,14 +69,18 @@ def edit_book(request, book_id):
     
     if request.method == "POST":
         form = BookForm(request.POST, request.FILES, instance=book)
+        form.fields["category"].queryset = Category.objects.filter(library=request.user.librarian.library)
+
         if form.is_valid(): 
             form.save()
             messages.success(request, f'{book.title} has been updated')
             return redirect("get-books")
         print(form.errors)
-    form = BookForm(instance=book)    
+    form = BookForm(instance=book)
+    form.fields["category"].queryset = Category.objects.filter(library=request.user.librarian.library)
+
     messages.error(request, form.errors)
-    return render(request, 'librarian/edit_book.html', {"form":form, "book":book})
+    return render(request, 'librarian/edit_book.html', {"form":form, "book":book,})
     
 
 def delete_book(request, book_id):
@@ -140,8 +154,14 @@ def get_public_books(request, library_id):
     return render(request, 'books/bookshelf.html', {'books': books})
 
 
+def add_category(request):
 
-
+    if request.method == "POST":
+        name = request.POST.get("name")
+        library = request.user.librarian.library
+        category = Category.objects.create(name=name, library=library)
+        messages.success(request, f'New Category added')
+        return redirect("get-books")
 
 
 

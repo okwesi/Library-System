@@ -11,16 +11,31 @@
 </div>
 {% endfor %}
     <div>
-        <h3>School Orders</h3>
+        <form action="" method="post" id="approve-form">
+            {% csrf_token %}
+        <h3>School Order</h3>
         {% if school_request %}
         {% for order in school_request %}
         <table  class="table table-warning table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">school</th>
+                    <th ope="col">Book</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Approve</th>
+                </tr>
+            </thead>
             <tbody id="school-books-row">
               <tr>
-                  <td>{{order.id}}</td>
+                  <td>{{order.school.name}}</td>
                   <td>{{order.book}}</td>
                   <td>{{order.status}}</td>                   
-                  <td>{{order.quantity}}</td>                   
+                  <td>{{order.request_date}}</td>                   
+                  <td>{{order.quantity}}</td>  
+                  <td><input class="form-check-input btn-success text-warning" type="checkbox" value="{{order.id}}" name="box" id="flexCheckDefault" /></td>
+                 
                </tr>
             </tbody>
           </table>
@@ -33,7 +48,7 @@
 
 
     <h3>Students Orders</h3>
-
+    
     <table class="table table-warning table-striped">
         <thead>
             <tr>
@@ -41,6 +56,7 @@
                 <th scope="col">Book</th>
                 <th scope="col">Status</th>
                 <th scope="col">Date</th>
+                <th scope="col">Approve</th>
             </tr>
         </thead>
         <tbody>
@@ -50,14 +66,15 @@
                 <td>{{student_request.book.title}}</td>
                 <td>{{student_request.status}}</td>
                 <td>{{student_request.request_date}}</td>
+                <td><input class="form-check-input btn-success text-warning" type="checkbox" value="{{student_request.id}}" name="boxes" id="flexCheckDefault" /></td>
+
             </tr>
             {% endfor %}
 
         </tbody>
     </table>
 
-    <form action="" method="post" id="approve-form">
-        {% csrf_token %}
+    
         <button type="submit" class="btn btn-success text-warning rounded-pill col-5 m-auto">Approve Request</button>
     </form>
 </div>

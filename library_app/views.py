@@ -2,7 +2,7 @@ import json
 import random
 from base64 import urlsafe_b64encode
 from email.message import EmailMessage
-from re import S
+from datetime import date
 
 # time import_fresh_module
 from books.forms import BookForm
@@ -36,12 +36,17 @@ def super_dashboard_view(request):
     # librarian = Librarian.objects.filter(library=request.user.librarian.library).count()
     student_requests = StudentRequests.objects.filter(library=request.user.librarian.library).count()
     school_requests = SchoolRequests.objects.filter(library=request.user.librarian.library).count()
+    requests = StudentRequests.objects.raw(f"select id,school_id,   count(*) count from (select id,school_id, status, student_id, request_date from request_studentrequests where library_id='{request.user.librarian.library.id.hex}') group by school_id ")
+    category_data = StudentRequests.objects.raw(f"select  id, book_id, count(*) as number_of_request, name, category_id from (select * from request_studentrequests join (select books_book.id as book_id, books_category.id as category_id, books_category.name from books_book join books_category on books_book.category_id = books_category.id) book  on request_studentrequests.book_id = book.book_id where request_studentrequests.library_id='{request.user.librarian.library.id.hex}') group by category_id")
+    
     context = {
         "school":school,
         "books":books,
         # "librarian" : librarian,
         "student_requests":student_requests,
-        "school_requests": school_requests
+        "school_requests": school_requests,
+        "requests" :requests, 
+        "category_data":category_data
     }
     
     return render(request, "librarian/overview.html", context)

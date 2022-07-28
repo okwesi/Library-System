@@ -7,6 +7,7 @@ from . views import *
 
 urlpatterns = [
         path('add/', add_book, name="add_books"),
+        path('add/category', add_category, name="add_category"),
         # url('add-book/', BookAddView.as_view(), name="add-books"),
         path('get-books/', LibrarianBookListView.as_view(), name="get-books"),
         

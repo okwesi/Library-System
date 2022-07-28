@@ -3,10 +3,10 @@
 {% block content %}
 <div class="container col-lg-6 mt-4 py-2">
     {% if form.errors %}
-        <div class="alert alert-danger">
-            {{ form.errors }}
-        </div>
-        {% endif %}
+    <div class="alert alert-danger">
+        {{ form.errors }}
+    </div>
+    {% endif %}
     <div class="card text-success" style="border-radius: 1rem; background: hsla(0, 0%, 100%, 0.5);
 backdrop-filter: blur(20px);">
         <h2 class="text-center">Add Book</h2>
@@ -24,17 +24,38 @@ backdrop-filter: blur(20px);">
                 {{form.about}}
                 <label class="form-label" for="id_description">About Book</label>
             </div>
-            <div class="form-outline mb-4">
-                {{form.stock}}
-                <label class="form-label" for="id_title">Stock</label>
+
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <div class="form-outline mb-4">
+                        {{form.stock}}
+                        <label class="form-label" for="id_title">Stock</label>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-outline mb-2">
+                        {{form.category}}
+                        <!-- <select class="form-select" aria-label="Default select example" name="category">
+                            <option selected>------</option>
+                        {% for cat in category%}
+                            <option value="{{cat.id}}">{{cat.name}}</option>
+                        {% endfor %}
+                        </select> -->
+                         <label class="form-label text-success" for="id_category">Select Category
+                        </label>
+                    </div>
+                </div>
             </div>
+
             <div class="row mb-4">
                 <div class="form-outline  col-lg-6">
                     {{form.book_cover}}
                     <label class="form-label " for="id_title">Book Cover</label>
                 </div>
                 <div class="col-lg-6">
-                    <img id="blah" src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/book-cover%2Ccover-design-template-5aba4e55a1fbd85eeab260326aca1285_screen.jpg?ts=1637011170" class="img-fluid " width="200" height="200" />
+                    <img id="blah"
+                        src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/book-cover%2Ccover-design-template-5aba4e55a1fbd85eeab260326aca1285_screen.jpg?ts=1637011170"
+                        class="img-fluid " width="200" height="200" />
                 </div>
 
             </div>
@@ -48,11 +69,12 @@ backdrop-filter: blur(20px);">
 {% endblock content %}
 {% block scripts %}
 <script>
+    document.getElementById("id_category").classList.add("form-select", "text-warning")
     document.getElementById("id_about").classList.add("form-control", "text-warning")
-    document.getElementById("id_book_cover").classList.add("form-control", "", "text-warning")
+    document.getElementById("id_book_cover").classList.add("form-control",  "text-warning")
 </script>
 <script>
-    
+
     id_book_cover.onchange = evt => {
         const [file] = id_book_cover.files
         if (file) {

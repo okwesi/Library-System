@@ -29,6 +29,7 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.0/js/swiper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -108,7 +109,7 @@
                 {% if user.is_authenticated %}
                 <span class="badge bg-warning text-success">{{user.email}}</span>
                 <span class="badge bg-warning text-success">{{user.groups.all.0.name}}</span>
-                <a class="form-class ms-lg-5 btn btn-warning text-success ms-3 rounded-pill" href="{% url 'logout' %}"> Log Out </a>
+                <!-- <a class="form-class ms-lg-5 btn btn-warning text-success ms-3 rounded-pill" href="{% url 'logout' %}"> Log Out </a> -->
 
                 {% else %}
                 <a href="{% url 'login_user' %}?next={{ request.path }}" class="btn btn-warning text-success ms-3 rounded-pill">Login</a>

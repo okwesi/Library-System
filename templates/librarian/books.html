@@ -10,9 +10,14 @@
     </div>
     {% endfor %}
     <div class="row ">
-      <a class="btn btn-success text-warning my-2 col-3 rounded-pill" type="button" href="{% url 'add_books' %}">Add Book</a>
+      <div class="d-flex my-2 col-lg-5">
+        <a class="btn btn-success text-warning my-2 mx-2 col-5 rounded-pill" type="button"
+          href="{% url 'add_books' %}">Add Book</a>
+        <a class="btn btn-success text-warning my-2 col-5 rounded-pill" data-bs-toggle="modal"
+          data-bs-target="#exampleModal" type="button" href="{% url 'add_books'%}">Add Category</a>
+      </div>
 
-      <form class="d-flex my-2 col-8" method=" get">
+      <form class="d-flex my-3 col-lg-6" method=" get">
         <input name="search" value="{{request.GET.search}}" class="form-control  me-2" type="search"
           placeholder="Search" aria-label="Search">
         <button class="btn btn-success text-warning border border-warning" text-primary" type="submit">Search</button>
@@ -74,7 +79,36 @@
       {% endif %}
     </nav>
   </footer>
+</div>
 
+
+
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h5 class="modal-title text-success" id="exampleModalLabel">Add Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'add_category' %}" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-success">Name</label>
+            <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp">
+            <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+          </div>
+         
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success text-warning">Save changes</button>
+          </div>
+        </form>
+      </div>
+      <h5>Categories</h5>
+      {% for cat in category %}{{cat.name}} <br>{% endfor %}
+    </div>
+  </div>
 </div>
 
 
@@ -83,6 +117,6 @@
   document.getElementById("books").classList.add("bg-warning", "px-5", "rounded-pill")
   setTimeout(function () {
     document.getElementById('message').style.display = "none";
-}, 4000);
+  }, 4000);
 </script>
 {% endblock content %}
