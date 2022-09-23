@@ -30,7 +30,6 @@ from library_app.models import Librarian, Library
 # Create your views here.
 
 def super_dashboard_view(request):
-    """function for creating forms to add users then sends a verification link to the email of the user"""
     school = School.objects.filter(library=request.user.librarian.library).count()
     books = Book.objects.filter(library=request.user.librarian.library).count()
     # librarian = Librarian.objects.filter(library=request.user.librarian.library).count()
