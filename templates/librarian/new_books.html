@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "librarian/sidenav.html" %}
+<div class="col d-flex flex-column h-sm-100">
+  <main class="row overflow-auto ">
+    <nav>
+      <div class="nav nav-tabs  nav-justified mb-3" id="nav-tab" role="tablist">
+        <button class="nav-link active text-success" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">All</button>
+        <button class="nav-link text-success" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Grouped</button>
+      </div>
+    </nav>
+
+    <div class="tab-content" id="nav-tabContent" style="overflow-y:scroll; height:85vh;">
+      <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <table class="table text-center">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Time</th>
+              <th scope="col">Time Since</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for book in new_books  %}
+            <tr>
+              <td>{{book.name | title}}</td>
+              <td>{{book.time_created | date}}</td>
+              <td>{{book.time_created | timesince}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <table class="table text-center">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in grouped_new_books  %}
+          <tr>
+            <td>{{book.name}}</td>
+            <td>{{book.count}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table></div>
+    </div>
+    
+  </main>
+
+  
+</div>
+
+</div>
+</div>
+<script>
+  document.getElementById("new_books").classList.add("bg-warning", "px-5", "rounded-pill")
+
+
+</script>
+{% endblock content %}

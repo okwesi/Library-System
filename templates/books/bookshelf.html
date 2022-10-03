@@ -2,40 +2,39 @@
 {% load static %}
 
 {% block content %}
-{% if messages %}
-<ul class="messages" id="alert">
-  {% for message in messages %}
-  <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+
 <div class="col d-flex flex-column container h-sm-100">
   <main class="row overflow-auto ">
 
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
+    <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show text-center" role="alert" id="message">
       <strong>Message: </strong> {{ message }}
     </div>
     {% endfor %}
-    <div class="row ">
-      <form class="d-flex mt-4 mb-4 col-lg-6 justify-content-center" method=" get">
+
+    <div class="row mt-4 mb-">
+      <form class="d-flex  col-lg-6 justify-content-center" method="GET">
+        {% csrf_token %}
         <input name="search" value="{{request.GET.search}}" class="form-control  me-2" type="search"
           placeholder="Search" aria-label="Search">
         <button class="btn btn-success border border-success text-warning" type="submit">Search</button>
 
       </form>
+      <a href="" class="text-success col-lg-3 mt-3" data-toggle="modal" data-target="#exampleModal">Couldn't Find
+        Book?</a>
     </div>
 
 
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-    {% for book in books %}   
-    <br>
+      {% for book in books %}
+      <br>
       <div class="col">
         <div class="card h-100">
           {% if book.book_cover %}
           <img src="{{book.book_cover.url}}" alt="{{book.title}}" class="card-img-top" height="300px">
           {% else %}
-          <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" height="300px" class="card-img-top"  alt="Skyscrapers" />
+          <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" height="300px" class="card-img-top"
+            alt="Skyscrapers" />
           {% endif %}
           <div class="card-body">
             <h5 class="card-title">{{book.title}}</h5>
@@ -58,12 +57,13 @@
   </main>
 
   <footer class="py-4 mt-auto mx-auto">
-    <nav aria-label="Page navigation example" >
+    <nav aria-label="Page navigation example">
       {% if is_paginated %}
       <ul class="pagination">
         {% if page_obj.has_previous %}
         <li class="page-item ">
-          <a class="page-link bg-success text-warning" href="?page={{page_obj.previous_page_number}}">&laquo; Previous</a>
+          <a class="page-link bg-success text-warning" href="?page={{page_obj.previous_page_number}}">&laquo;
+            Previous</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -99,12 +99,41 @@
     </nav>
   </footer>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Entry Form</h5>
 
+        <i type="button" data-dismiss="modal" aria-label="Close" class="bi bi-x-square-fill text-warning"></i>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'add_new_book' library %}" method="POST">
+          {% csrf_token %}
+          <p>
+            If You can not find your preferred books in our catalog, then you can enter the name of the book in the
+            input below.
+          </p>
+          <div class="form-outline">
+            <input type="text" id="name" name="name" required class="form-control" placeholder="Book Name" />
+            <!-- <label class="form-label" for="typeText">Text input</label> -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
-  document.getElementById("bookshelf").classList.add("bg-success",'shadow-lg','rounded-pill', 'px-4')
+  document.getElementById("bookshelf").classList.add("bg-success", 'shadow-lg', 'rounded-pill', 'px-4')
   setTimeout(function () {
     document.getElementById('message').style.display = "none";
-}, 4000);
+  }, 4000);
 </script>
 
 {% endblock content %}

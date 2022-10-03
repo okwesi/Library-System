@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import get_object_or_404, redirect, render
 
 from django.contrib.sites.shortcuts import get_current_site
@@ -24,7 +25,7 @@ from django.views.generic.edit import UpdateView
 
 from django.contrib.auth import get_user_model
 
-from django.utils.encoding import force_bytes,force_text
+from django.utils.encoding import force_bytes,force_str
 from .tokens import account_activation_token
 
 from django.core.mail import EmailMessage, send_mail
@@ -212,7 +213,6 @@ def create_librarian(request):
     else:
         form = LibrarianForm()
         password = passwordgen.objects.make_random_password()
-        print(password)
             
     return render(request, 'librarian/add_librarian.html', {'form': form, "password":password})
 
@@ -224,7 +224,7 @@ def activate(request, uidb64, token):
     click on the activation link sent to their email"""
     User = get_user_model()
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None

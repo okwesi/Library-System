@@ -18,7 +18,7 @@ from django.utils import timezone
 # from django.utils.encoding import force_bytes, force_text
 
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from books.models import Book
+from books.models import Book, NewBooks
 from request.models import SchoolRequests, StudentRequests
 from students_school.models import School, Student
 from users.forms import SignSchoolUpForm
@@ -38,6 +38,8 @@ def super_dashboard_view(request):
     school_requests = SchoolRequests.objects.filter(library=request.user.librarian.library).count()
     requests = StudentRequests.objects.raw(f"select id,school_id,   count(*) count from (select id,school_id, status, student_id, request_date from request_studentrequests where library_id='{request.user.librarian.library.id.hex}') group by school_id ")
     category_data = StudentRequests.objects.raw(f"select  id, book_id, count(*) as number_of_request, name, category_id from (select * from request_studentrequests join (select books_book.id as book_id, books_category.id as category_id, books_category.name from books_book join books_category on books_book.category_id = books_category.id) book  on request_studentrequests.book_id = book.book_id where request_studentrequests.library_id='{request.user.librarian.library.id.hex}') group by category_id")
+    books_data = StudentRequests.objects.raw(f"select request_studentrequests.id , request_studentrequests.library_id, request_studentrequests.book_id, books_book.title, count(*) as number from request_studentrequests join books_book on request_studentrequests.book_id = books_book.id where request_studentrequests.library_id = '{request.user.librarian.library.id.hex}' group by request_studentrequests.book_id")
+    date_data = StudentRequests.objects.raw(f"select id,count(*) as number, strftime('%m-%Y', request_date) as 'month_year' from request_studentrequests where library_id='{request.user.librarian.library.id.hex}' group by strftime('%m-%Y', request_date)  order by  strftime('%m-%Y', request_date) asc")
     
     context = {
         "school":school,
@@ -46,9 +48,11 @@ def super_dashboard_view(request):
         "student_requests":student_requests,
         "school_requests": school_requests,
         "requests" :requests, 
-        "category_data":category_data
+        "category_data":category_data[:5],
+        "books_data" : books_data[:6],
+        "date_data" : date_data[:8]
     }
-    
+
     return render(request, "librarian/overview.html", context)
 
 # converts time date
@@ -95,6 +99,12 @@ def librarian_dashboard_view(request):
 def get_schools(request):
     schools = School.objects.filter(library=request.user.librarian.library_id)
     return render(request, "librarian/schools.html", {"schools":schools})
+
+
+def get_new_books(request):
+    new_books = NewBooks.objects.filter(library_id=request.user.librarian.library.id)
+    grouped_new_books = NewBooks.objects.raw(f"select *, count(*) as count from books_newbooks where library_id = '{request.user.librarian.library.id.hex}' group by lower(name)")
+    return render(request, "librarian/new_books.html", {"new_books":new_books, "grouped_new_books":grouped_new_books})
 
 
 

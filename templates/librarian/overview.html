@@ -1,14 +1,10 @@
-{% extends "base.html" %} {% block content %} 
+{% extends "base.html" %} {% block content %}
 {% include "librarian/sidenav.html" %}
 
 <div class="col d-flex flex-column h-sm-100">
-  <main class="row overflow-auto container" id="main">
+  <main class="row overflow-auto " id="main">
     {% for message in messages %}
-    <div
-      class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show"
-      role="alert"
-      id="message"
-    >
+    <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert" id="message">
       <strong>Message: </strong> {{ message }}
     </div>
     {% endfor %}
@@ -16,13 +12,8 @@
     <div class="card my-5" style="">
       <div class="row g-0">
         <div class="col-md-4">
-          <img
-            src="https://geminioffice.co.uk/wp-content/uploads/2018/11/silhouette-unisex.png"
-            class="img-fluid rounded-start"
-            alt="..."
-            width="150"
-            height="150"
-          />
+          <img src="https://geminioffice.co.uk/wp-content/uploads/2018/11/silhouette-unisex.png"
+            class="img-fluid rounded-start" alt="..." width="150" height="150" />
         </div>
         <div class="col-md-8">
           <div class="card-body">
@@ -88,26 +79,44 @@
         </div>
       </div>
     </div>
+    <!-- first two charts -->
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-2 g-4">
       <div class="col">
         <div class="card h-100">
-          <div >
+          <div>
             <canvas id="school_requests_chart" width="200" height="200"></canvas>
           </div>
         </div>
       </div>
       <div class="col">
         <div class="card h-100">
-          <div >
+          <div>
             <canvas id="category_chart" width="200" height="200"></canvas>
           </div>
         </div>
       </div>
-    <div>
-   
+    </div>
 
-   
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-2 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <div>
+            <canvas id="category_chart1" width="200" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div>
+            <canvas id="category_chart2" width="200" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+      <div>
+
+
   </main>
+
 </div>
 
 <script>
@@ -121,76 +130,115 @@
 <script>
   const ctx2 = document.getElementById('school_requests_chart').getContext('2d');
   const myChart = new Chart(ctx2, {
-      type: 'bar',
-      data: {
-          labels: [ {% for item in requests %}'{{item.school.name}}',{% endfor %}],
-          datasets: [{
-              label: 'School Requests',
-              data: [{% for item in requests %}{{item.count}},{% endfor %}],
-              backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-                  ],
-                  borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
+    type: 'bar',
+    data: {
+      labels: [{% for item in requests %}'{{item.school.name}}',{% endfor %}],
+  datasets: [{
+    label: 'Schools Request',
+    data: [{% for item in requests %}{{ item.count }}, {% endfor %}],
+    backgroundColor: [
+    'rgba(25,135,84,2)',      
+    ],
+      borderColor: [
+      'rgba(255,193,7,1)',        
+      ],
+        borderWidth: 2,
+        borderRadius: 50,
           }]
       },
-      options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
       });
 </script>
 
 <script>
   const ctx1 = document.getElementById('category_chart').getContext('2d');
   const myChart1 = new Chart(ctx1, {
-      type: 'polarArea',
-      data: {
-          labels: [ {% for item in category_data %}'{{item.name}}',{% endfor %}],
-          datasets: [{
-              label: 'School Requests',
-              data: [{% for item in category_data %}{{item.number_of_request}},{% endfor %}],
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
+    type: 'doughnut',
+    data: {
+      labels: [{% for item in category_data %}'{{item.name}}',{% endfor %}],
+  datasets: [{
+    data: [{% for item in category_data %}{{ item.number_of_request }}, {% endfor %}],
+    backgroundColor: [
+      'rgba(25,135,84,1)',
+      'rgba(255,193,7,1)',
+      'rgba(255, 206, 86, 1)',
+      'rgba(75, 192, 192, 1)',
+      'rgba(153, 102, 255, 1)',
+      'rgba(255, 159, 64, 1)'
+    ],
+      
+        borderWidth: 1
           }]
       },
-      options: {
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
       }
+    }
+  }
+  });
+</script>
+<script>
+  const ctx3 = document.getElementById('category_chart1').getContext('2d');
+  const myChart3 = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+      labels: [{% for item in books_data %}'{{item.title}}',{% endfor %}],
+  datasets: [{
+    label: 'Books Requested',
+    data: [{% for item in books_data %}{{ item.number }}, {% endfor %}],
+    backgroundColor: [
+    'rgba(25,135,84,2)',      
+    ],
+      borderColor: [
+      'rgba(255,193,7,1)',        
+      ],
+        borderWidth: 2,
+        borderRadius: 50,
+          }]
+      },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+  });
+</script>
+<script>
+  const ctx4 = document.getElementById('category_chart2').getContext('2d');
+  const myChart4 = new Chart(ctx4, {
+    type: 'line',
+    data: {
+      labels: [{% for item in date_data %}'{{item.month_year}}',{% endfor %}],
+  datasets: [{
+    label: 'Months',
+    data: [{% for item in date_data %}{{ item.number}}, {% endfor %}],
+    backgroundColor: [
+    'rgba(25,135,84,2)',      
+    ],
+      borderColor: [
+      'rgba(25,135,84,2)',        
+      ],
+        borderWidth: 2,
+        borderRadius: 50,
+          }]
+      },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
   });
 </script>
 {% endblock content %}

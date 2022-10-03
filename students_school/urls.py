@@ -17,7 +17,7 @@ urlpatterns = [
         # url('student/bookshelf/', student_bookshelf, name="student-bookshelf"),
         path(r'student/get_books/<int:num_books>/', get_student_books, name="get-student-books"),
         
-        path('student/get_book/', get_book_history, name='get_books'),
+        path('student/get_book/', get_book_history, name='get_requested_books'),
         path('students/requests-history/', get_request_history, name="get_request_history"),
         path('students/ongoing-requests/', get_ongoing_request, name="get_ongoing_request")
 ]  

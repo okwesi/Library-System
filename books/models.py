@@ -36,4 +36,12 @@ class Book(models.Model):
 
 
 
+class NewBooks(models.Model):
+    name = models.CharField(max_length=250)
+    time_created = models.DateTimeField(auto_now=True, auto_now_add=False)
+    library = models.ForeignKey(Library, on_delete=models.CASCADE)
+
+
+
+
 

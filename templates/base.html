@@ -39,6 +39,17 @@
         border-color: #28a745;
         box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
       }
+      body::-webkit-scrollbar {
+        width: 8px;               /* width of the entire scrollbar */
+      }
+      body::-webkit-scrollbar-track {
+        background: #198754;        /* color of the tracking area */
+      }
+      body::-webkit-scrollbar-thumb {
+        background-color: #ffc107;    /* color of the scroll thumb */
+        border-radius: 10px;       /* roundness of the scroll thumb */
+        border: 3px solid #ffc107;  /* creates padding around scroll thumb */
+      }
       
 </style>
 </head>
@@ -94,7 +105,7 @@
                     </li>
                     {% elif user.groups.all.0.name == "student" %}
                     <li class="nav-item" id="dashboard">
-                        <a class="nav-link text-warning" href="{% url 'get_books' %}">DashBoard</a>
+                        <a class="nav-link text-warning" href="{% url 'get_requested_books' %}">DashBoard</a>
                     </li>
                     {% elif user.is_superuser %}
                     <li class="nav-item" id="dashboard">
@@ -125,13 +136,26 @@
     </div>
 
 </body>
+<!-- <script src="//code.jivosite.com/widget/InOAG6MBFz" async></script> -->
 
 <script src="{% static 'library/javascript/js.js' %}"></script>
 <script>   
     var a = document.getElementById('link'); 
     a.href = location.origin + "/admin" 
 </script>
-
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/62fbf2f654f06e12d88f0403/1gak2q5ql';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 
 {% block scripts %}
 

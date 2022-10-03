@@ -10,7 +10,7 @@ from books.forms import BookForm
 from django.urls import reverse
 from django.contrib import messages
 
-from books.models import Book, Category
+from books.models import Book, Category, NewBooks
 from library_app.models import Library
 from request.forms import SchoolRequestForm
 
@@ -27,38 +27,38 @@ class LibrarianBookListView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('search')
         if query:
-            object_list = self.model.objects.filter(title__contains=query)
+            object_list = self.model.objects.filter(title__icontains=query)
         else:
-            object_list = self.model.objects.filter(library=self.request.user.librarian.library)
+            object_list = self.model.objects.all()
         return object_list
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["category"] = Category.objects.filter(library=self.request.user.librarian.library)
+        context["category"] = Category.objects.all()
+        # context["library"] = self.request.
         return context
 
 
-def add_book(request):
+def add_book(request): 
     if request.method == "POST":
         form = BookForm(request.POST, request.FILES)
         form.fields["category"].queryset = Category.objects.filter(library=request.user.librarian.library)
 
         if form.is_valid():
             print("Form is valid")
-            category = request.POST.get("category")
-            print(category)
-            # title = form.cleaned_data["title"]
-            # stock = form.cleaned_data["stock"]
-            # book_cover = request.FILES["book_cover"]
-            # about = form.cleaned_data["about"]
+            category = form.cleaned_data["category"]
+            title = form.cleaned_data["title"]
+            stock = form.cleaned_data["stock"]
+            book_cover = request.FILES["book_cover"]
+            about = form.cleaned_data["about"]
 
-            # book = Book.objects.create(title=title, about=about, book_cover=book_cover,
-            #  stock=stock, library=request.user.librarian.library, category=category)
-            # messages.info(request, f'{title} has been added')
+            book = Book.objects.create(title=title, about=about, book_cover=book_cover,
+             stock=stock, library=request.user.librarian.library, category=category)
+            messages.info(request, f'{title} has been added')
             return redirect("get-books")
         print(form.errors)
     form = BookForm()
-    form.fields["category"].queryset = Category.objects.filter(library=request.user.librarian.library)
+    form.fields["category"].queryset = Category.objects.all()
 
     # category = Category.objects.filter(library=request.user.librarian.library_id)
     return render(request, 'librarian/add_book.html', {"form":form,})
@@ -92,7 +92,7 @@ def delete_book(request, book_id):
 
 
 #for schools and students
-class PublicBookListView(ListView):
+class BookListView(ListView):
     model = Book
     template_name = 'books/bookshelf.html'
     context_object_name = "books"
@@ -101,7 +101,7 @@ class PublicBookListView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('search')
         if query:
-            object_list = self.model.objects.filter(title__contains=query)
+            object_list = self.model.objects.filter(title__icontains=query)
         else:
             if self.request.user.groups.filter(name='student').exists():
                 object_list = self.model.objects.filter(library=self.request.user.student.school.library)
@@ -121,6 +121,15 @@ class PublicBookListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.user.groups.filter(name='student').exists():
+            context["library"]=self.request.user.student.school.library.id
+        elif self.request.user.groups.filter(name='school').exists():
+            context["library"]=self.request.user.school.library.id
+        elif self.request.user.groups.filter(name='librarian').exists():
+            context["library"]=self.request.user.librarian.library.id
+        elif self.request.user.groups.filter(name='super Librarian').exists():
+            context["library"]=self.request.user.librarian.library.id
+                
         return context
 
 
@@ -151,7 +160,33 @@ def public_get_libraries(request):
 
 def get_public_books(request, library_id):
     books = Book.objects.filter(library = library_id)
-    return render(request, 'books/bookshelf.html', {'books': books})
+    if request.method == "GET":
+        title = request.GET.get("search")
+        books = books.filter(title__icontains=title)
+        return render(request, 'books/bookshelf.html', {'books': books})
+    else:
+        return render(request, 'books/bookshelf.html', {'books': books})
+
+
+class PublicBookListView(ListView):
+    model = Book
+    template_name = 'books/bookshelf.html'
+    context_object_name = "books"
+    paginate_by = 20
+    
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get('search')
+        if query:
+            object_list = self.model.objects.filter(title__icontains=query)
+        else:
+            object_list = self.model.objects.filter(library_id=self.kwargs['library_id'])
+        return object_list
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["library"] = self.kwargs['library_id']
+        return context
+
 
 
 def add_category(request):
@@ -164,7 +199,22 @@ def add_category(request):
         return redirect("get-books")
 
 
+def add_new_book(request, library_id):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        library=get_object_or_404(Library, id=library_id)
+        new_book = NewBooks.objects.create(name=name, library=library)
+        messages.success(request, "Request has been accepted😊", extra_tags='alert alert-success alert-dismissible fade show')
+        if request.user.is_authenticated:
+            return redirect('public-books')
+        else:
+            return HttpResponseRedirect(reverse('get_public_books', kwargs={'library_id': library.id}))
 
+            # return HttpResponseRedirect(reverse('get_public_books', kwargs={'library_id':library_id}))
+
+    else:
+        messages.error(request, "Something Went Wrong, Please fill the forms again")
+        return HttpResponseRedirect(reverse('get-books'))
 
 
 

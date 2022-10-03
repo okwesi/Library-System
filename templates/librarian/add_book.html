@@ -41,7 +41,7 @@ backdrop-filter: blur(20px);">
                             <option value="{{cat.id}}">{{cat.name}}</option>
                         {% endfor %}
                         </select> -->
-                         <label class="form-label text-success" for="id_category">Select Category
+                        <label class="form-label text-success" for="id_category">Select Category
                         </label>
                     </div>
                 </div>
@@ -64,6 +64,10 @@ backdrop-filter: blur(20px);">
                 <button type="submit" class="btn btn-success text-warning col-lg-6 col-10 rounded-pill">Submit</button>
             </div>
         </form>
+
+        
+
+
     </div>
 </div>
 {% endblock content %}
@@ -71,7 +75,7 @@ backdrop-filter: blur(20px);">
 <script>
     document.getElementById("id_category").classList.add("form-select", "text-warning")
     document.getElementById("id_about").classList.add("form-control", "text-warning")
-    document.getElementById("id_book_cover").classList.add("form-control",  "text-warning")
+    document.getElementById("id_book_cover").classList.add("form-control", "text-warning")
 </script>
 <script>
 
