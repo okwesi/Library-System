@@ -127,12 +127,10 @@ def signup_student(request):
 def signup_school(request):
     """function for creating forms to add users then sends a verification link to the email of the user"""
     if request.method == 'POST':
-        print("post")
         form = SignSchoolUpForm(request.POST, auto_id="school_%s")
-        # print(form.data)
-        # print(form.errors)
-        # print(form.non_field_errors)
+        print("save1")
         if form.is_valid():
+            print(form)
             # save form in the memory not in database
             user = form.save()
             #adds a group to the user
@@ -167,9 +165,9 @@ def signup_school(request):
             return redirect('get-schools')
 
     else:
-        form = SignSchoolUpForm()
+        form = SignSchoolUpForm(auto_id="school_%s")
         password = passwordgen.objects.make_random_password()
-
+    # messages.success(request, f"{form.error} has been created")
     return render(request, 'librarian/signup_school.html', {'form': form, "password":password})
 
 

@@ -122,7 +122,7 @@ def librarian_get_request_details(request, school_id):
         if school_request_id:
             print(school_request_id)
             SchoolRequests.objects.filter(id=int(school_request_id), school_id=school_id, status="Pending Approval").update(status="Approved")   
-        messages.success(request,  f"{get_object_or_404(School, school_id=school_id)}'s Request has been approved")
+        # messages.success(request,  "Request has been approved")
         return redirect("librarian_get_grouped_request")
     # else:
         # messages.error(request,  f"Something Went Wrong")    
